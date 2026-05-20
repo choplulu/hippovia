@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hippovia — Hippovia — L'annuaire équestre belge</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --sage:#2D9B6F;--sage-l:#E6F5EE;--sage-d:#1a6b4a;
+  --amber:#D4780A;--amber-l:#FEF3E2;
+  --sky:#1A7EC8;--sky-l:#E8F3FD;
+  --berry:#8B3A8F;--berry-l:#F5EAF6;
+  --coral:#D94F2B;--coral-l:#FDEEE9;
+  --teal:#0E8A8A;--teal-l:#E5F5F5;
+  --gold:#B8860B;--gold-l:#FDF6E3;
+  --text:#1A1A1A;--muted:#6B6B6B;--border:rgba(0,0,0,0.09);
+  --bg:#F7F9F7;--white:#fff;
+}
+body{font-family:'DM Sans',sans-serif;color:var(--text);background:var(--bg);min-height:100vh}
+nav{background:var(--white);border-bottom:1px solid var(--border);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:58px;position:sticky;top:0;z-index:200}
+.logo{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:#1A1A1A;text-decoration:none;cursor:pointer;border:none;background:none;font-family:'Cormorant Garamond',serif}
+.logo span{color:var(--sage)}
+.nav-right{display:flex;align-items:center;gap:20px}
+.nav-link{font-size:13px;color:var(--muted);cursor:pointer;text-decoration:none;transition:color .15s;border:none;background:none;font-family:'DM Sans',sans-serif;padding:0}
+.nav-link:hover,.nav-link.active{color:var(--text);font-weight:500}
+.nav-cta{background:var(--sage);color:white;padding:7px 18px;border-radius:20px;font-size:13px;font-weight:500;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;transition:background .2s}
+.nav-cta:hover{background:var(--sage-d)}
+.page{display:none}.page.active{display:block}
+.hero{background:linear-gradient(135deg,#0F5C3A 0%,#1A7A50 50%,#0E6B8A 100%);padding:52px 2rem 56px;text-align:center;position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:40px;background:var(--bg);clip-path:ellipse(55% 100% at 50% 100%)}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:rgba(255,255,255,0.9);font-size:11px;letter-spacing:.1em;padding:5px 14px;border-radius:20px;margin-bottom:18px;text-transform:uppercase;font-weight:500}
+.hero h1{font-family:'Cormorant Garamond',serif;font-size:46px;font-weight:600;color:white;line-height:1.15;margin-bottom:12px}
+.hero h1 em{font-style:italic;color:#7DE8B8}
+.hero p{color:rgba(255,255,255,0.75);font-size:14px;max-width:480px;margin:0 auto 28px;line-height:1.7;font-weight:300}
+.search-wrap{max-width:560px;margin:0 auto}
+.search-box{background:white;border-radius:14px;padding:5px 5px 5px 16px;display:flex;align-items:center;gap:10px;box-shadow:0 8px 40px rgba(0,0,0,0.18)}
+.search-box i{color:var(--muted);font-size:17px;flex-shrink:0}
+.search-box input{flex:1;border:none;outline:none;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);background:transparent}
+.search-box input::placeholder{color:#aaa}
+.search-btn{background:var(--sage);color:white;border:none;border-radius:10px;padding:10px 20px;font-size:13px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap}
+.stats{display:flex;justify-content:center;background:white;border-bottom:1px solid var(--border)}
+.stat{padding:14px 48px;text-align:center;border-right:1px solid var(--border)}
+.stat:last-child{border-right:none}
+.stat-num{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:600;color:var(--sage)}
+.stat-label{font-size:11px;color:var(--muted);letter-spacing:.05em;text-transform:uppercase;margin-top:1px;font-weight:500}
+.main{max-width:1080px;margin:0 auto;padding:28px 2rem}
+.filters-wrap{margin-bottom:24px}
+.filters-label{font-size:11px;color:var(--muted);letter-spacing:.07em;text-transform:uppercase;font-weight:500;margin-bottom:10px}
+.filter-tabs{display:flex;gap:8px;flex-wrap:wrap}
+.ftab{display:flex;align-items:center;gap:7px;padding:8px 16px;border-radius:10px;border:1.5px solid var(--border);background:white;font-size:13px;font-weight:400;color:var(--muted);cursor:pointer;transition:all .18s;font-family:'DM Sans',sans-serif;white-space:nowrap}
+.ftab .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.ftab.active{font-weight:500;border-width:2px;color:white}
+.ftab[data-type="all"]{border-color:#1A1A1A;color:#1A1A1A}.ftab[data-type="all"].active{background:#1A1A1A;color:white}
+.ftab[data-type="Pension / Centre équestre"] .dot{background:var(--sage)}.ftab[data-type="Pension / Centre équestre"].active{background:var(--sage);border-color:var(--sage);color:white}
+.ftab[data-type="Vétérinaire"] .dot{background:var(--sky)}.ftab[data-type="Vétérinaire"].active{background:var(--sky);border-color:var(--sky);color:white}
+.ftab[data-type="Maréchal-ferrant"] .dot{background:var(--amber)}.ftab[data-type="Maréchal-ferrant"].active{background:var(--amber);border-color:var(--amber);color:white}
+.ftab[data-type="Ostéopathe / Kiné"] .dot{background:var(--berry)}.ftab[data-type="Ostéopathe / Kiné"].active{background:var(--berry);border-color:var(--berry);color:white}
+.ftab[data-type="Sellier / Équipementier"] .dot{background:var(--coral)}.ftab[data-type="Sellier / Équipementier"].active{background:var(--coral);border-color:var(--coral);color:white}
+.ftab[data-type="Shiatsu"] .dot{background:var(--teal)}.ftab[data-type="Shiatsu"].active{background:var(--teal);border-color:var(--teal);color:white}
+.ftab[data-type="Nutritionniste équin"] .dot{background:var(--gold)}.ftab[data-type="Nutritionniste équin"].active{background:var(--gold);border-color:var(--gold);color:white}
+.filter-row2{display:flex;gap:8px;margin-top:10px;align-items:center;flex-wrap:wrap}
+.filter-select{padding:7px 32px 7px 12px;border-radius:8px;border:1.5px solid var(--border);background:white;font-size:12px;color:var(--muted);font-family:'DM Sans',sans-serif;outline:none;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'%3E%3Cpath fill='%236B6B6B' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center}
+.result-count{font-size:12px;color:var(--muted);margin-left:auto}
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(295px,1fr));gap:14px;margin-bottom:32px}
+.pro-card{background:white;border:1.5px solid var(--border);border-radius:14px;overflow:hidden;transition:box-shadow .2s,transform .2s;cursor:pointer}
+.pro-card:hover{box-shadow:0 6px 24px rgba(0,0,0,0.09);transform:translateY(-2px)}
+.card-stripe{height:4px}
+.card-body{padding:16px 18px}
+.card-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px}
+.card-icon-wrap{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0}
+.card-name{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:600;color:var(--text);line-height:1.2;margin-bottom:3px}
+.card-type-badge{display:inline-block;font-size:10px;font-weight:500;padding:3px 9px;border-radius:5px;letter-spacing:.04em;text-transform:uppercase;margin-bottom:10px}
+.card-details{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
+.card-detail{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted)}
+.card-detail i{font-size:14px;flex-shrink:0;width:16px}
+.card-tags{display:flex;flex-wrap:wrap;gap:5px;padding-top:10px;border-top:1px solid var(--border)}
+.tag{font-size:10px;padding:3px 8px;border-radius:5px;font-weight:500;letter-spacing:.03em}
+.card-footer{padding:10px 18px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.verified{font-size:11px;color:var(--sage);font-weight:500}
+.card-action{font-size:11px;font-weight:500;display:flex;align-items:center;gap:4px}
+.t-pension .card-stripe{background:var(--sage)}.t-pension .card-icon-wrap{background:var(--sage-l);color:var(--sage)}.t-pension .card-type-badge{background:var(--sage-l);color:var(--sage)}.t-pension .tag{background:var(--sage-l);color:var(--sage)}.t-pension .card-action{color:var(--sage)}
+.t-vet .card-stripe{background:var(--sky)}.t-vet .card-icon-wrap{background:var(--sky-l);color:var(--sky)}.t-vet .card-type-badge{background:var(--sky-l);color:var(--sky)}.t-vet .tag{background:var(--sky-l);color:var(--sky)}.t-vet .card-action{color:var(--sky)}
+.t-marechal .card-stripe{background:var(--amber)}.t-marechal .card-icon-wrap{background:var(--amber-l);color:var(--amber)}.t-marechal .card-type-badge{background:var(--amber-l);color:var(--amber)}.t-marechal .tag{background:var(--amber-l);color:var(--amber)}.t-marechal .card-action{color:var(--amber)}
+.t-osteo .card-stripe{background:var(--berry)}.t-osteo .card-icon-wrap{background:var(--berry-l);color:var(--berry)}.t-osteo .card-type-badge{background:var(--berry-l);color:var(--berry)}.t-osteo .tag{background:var(--berry-l);color:var(--berry)}.t-osteo .card-action{color:var(--berry)}
+.t-sellier .card-stripe{background:var(--coral)}.t-sellier .card-icon-wrap{background:var(--coral-l);color:var(--coral)}.t-sellier .card-type-badge{background:var(--coral-l);color:var(--coral)}.t-sellier .tag{background:var(--coral-l);color:var(--coral)}.t-sellier .card-action{color:var(--coral)}
+.t-shiatsu .card-stripe{background:var(--teal)}.t-shiatsu .card-icon-wrap{background:var(--teal-l);color:var(--teal)}.t-shiatsu .card-type-badge{background:var(--teal-l);color:var(--teal)}.t-shiatsu .tag{background:var(--teal-l);color:var(--teal)}.t-shiatsu .card-action{color:var(--teal)}
+.t-nutri .card-stripe{background:var(--gold)}.t-nutri .card-icon-wrap{background:var(--gold-l);color:var(--gold)}.t-nutri .card-type-badge{background:var(--gold-l);color:var(--gold)}.t-nutri .tag{background:var(--gold-l);color:var(--gold)}.t-nutri .card-action{color:var(--gold)}
+.skeleton{background:white;border:1.5px solid var(--border);border-radius:14px;overflow:hidden;height:220px;position:relative}
+.skeleton::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.6),transparent);animation:sh 1.4s infinite}
+@keyframes sh{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+.empty-state{text-align:center;padding:60px 20px;color:var(--muted);grid-column:1/-1}
+.empty-state i{font-size:48px;margin-bottom:12px;display:block;opacity:.3}
+.compare-banner{background:white;border:1.5px solid var(--border);border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:14px;margin-bottom:24px}
+.compare-icon{width:36px;height:36px;background:var(--sage-l);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--sage);font-size:18px;flex-shrink:0}
+.compare-text{flex:1;font-size:13px;color:var(--muted)}
+.compare-text strong{color:var(--text);font-weight:500}
+.compare-cta{background:var(--sage);color:white;border:none;padding:8px 18px;border-radius:8px;font-size:12px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif}
+.compare-section{background:white;border:1.5px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:24px;display:none}
+.compare-head{padding:16px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border)}
+.compare-head-title{font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--text);font-weight:600}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{padding:10px 16px;text-align:left;background:#FAFAFA;color:var(--muted);font-weight:500;letter-spacing:.04em;font-size:11px;text-transform:uppercase;border-bottom:1px solid var(--border)}
+td{padding:11px 16px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#FAFFF8}
+.pname{font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:600}
+.pregion{font-size:10px;color:var(--muted);margin-top:1px}
+.price-pill{background:var(--sage-l);color:var(--sage);padding:3px 10px;border-radius:6px;font-weight:500;font-size:11px}
+.chk{color:var(--sage)}.crs{color:#E05555}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:300;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.open{display:flex}
+.modal{background:white;border-radius:16px;max-width:540px;width:100%;max-height:90vh;overflow-y:auto;position:relative}
+.modal-stripe{height:6px;border-radius:16px 16px 0 0}
+.modal-head{padding:24px 24px 16px;display:flex;align-items:flex-start;gap:14px}
+.modal-icon{width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
+.modal-name{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;line-height:1.2;margin-bottom:4px}
+.modal-type{display:inline-block;font-size:11px;font-weight:500;padding:3px 10px;border-radius:5px;letter-spacing:.04em;text-transform:uppercase}
+.modal-body{padding:0 24px 24px;display:flex;flex-direction:column;gap:16px}
+.modal-section-title{font-size:11px;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px}
+.modal-details{display:flex;flex-direction:column;gap:8px}
+.modal-detail{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text)}
+.modal-detail i{font-size:16px;color:var(--muted);flex-shrink:0;width:18px}
+.modal-detail a{color:var(--sage);text-decoration:none;font-weight:500}
+.modal-detail a:hover{text-decoration:underline}
+.modal-tags{display:flex;flex-wrap:wrap;gap:6px}
+.modal-desc{font-size:13px;color:var(--muted);line-height:1.7}
+.modal-actions{display:flex;gap:10px;flex-wrap:wrap;padding-top:4px}
+.btn-primary{color:white;padding:10px 20px;border-radius:10px;font-size:13px;font-weight:500;text-decoration:none;display:inline-flex;align-items:center;gap:7px;border:none;cursor:pointer;font-family:'DM Sans',sans-serif}
+.btn-secondary{background:white;color:var(--text);padding:10px 20px;border-radius:10px;font-size:13px;font-weight:500;text-decoration:none;display:inline-flex;align-items:center;gap:7px;border:1.5px solid var(--border);cursor:pointer;font-family:'DM Sans',sans-serif}
+.modal-close{position:absolute;top:14px;right:14px;width:32px;height:32px;border-radius:50%;background:var(--bg);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--muted)}
+.form-page{max-width:640px;margin:0 auto;padding:32px 2rem}
+.form-page h2{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:600;margin-bottom:6px}
+.form-page .sub{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:24px}
+.form-card{background:white;border:1.5px solid var(--border);border-radius:14px;padding:28px}
+.fsec{margin-bottom:22px}
+.fsec-title{font-size:13px;font-weight:500;color:var(--text);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
+.fsec-title i{color:var(--sage)}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:11px;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
+.req{color:var(--coral)}
+.field input,.field select,.field textarea{width:100%;padding:10px 13px;border:1.5px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);background:#FAFAF8;outline:none;transition:border .15s}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--sage);background:white}
+.field textarea{min-height:80px;resize:vertical;line-height:1.6}
+.field select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'%3E%3Cpath fill='%236B6B6B' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;background-color:#FAFAF8;padding-right:32px}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.cb-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:6px}
+.cb-item{display:flex;align-items:center;gap:8px;padding:8px 11px;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;font-size:12px;color:var(--muted);transition:all .15s}
+.cb-item input{width:14px;height:14px;accent-color:var(--sage);cursor:pointer;flex-shrink:0}
+.cb-item.checked{border-color:var(--sage);background:var(--sage-l);color:var(--sage);font-weight:500}
+.form-note{background:#FEF9E7;border:1px solid #F9C96A44;border-radius:8px;padding:12px 14px;font-size:12px;color:#856404;line-height:1.6;margin-top:16px}
+.form-submit{width:100%;padding:13px;background:var(--sage);color:white;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:20px}
+.form-submit:hover{background:var(--sage-d)}
+.success-box{background:var(--sage-l);border:1px solid rgba(45,155,111,.3);border-radius:10px;padding:24px;text-align:center;display:none}
+.success-box i{font-size:36px;color:var(--sage);margin-bottom:10px;display:block}
+.success-box h3{font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--sage-d);margin-bottom:8px}
+.success-box p{font-size:13px;color:var(--sage-d);line-height:1.6}
+footer{background:white;border-top:1px solid var(--border);padding:24px 2rem;text-align:center;font-size:12px;color:var(--muted);margin-top:40px}
+</style>
+</head>
+<body>
+
+<nav>
+  <button class="logo" onclick="showPage('annuaire')">Hippo<span>via</span></button>
+  <div class="nav-right">
+    <button class="nav-link active" id="nav-annuaire" onclick="showPage('annuaire')">Annuaire</button>
+    <button class="nav-link" id="nav-pensions" onclick="showPage('pensions')">Pensions</button>
+    <button class="nav-link" id="nav-pros" onclick="showPage('pros')">Professionnels</button>
+    <button class="nav-cta" onclick="showPage('inscription')">+ Inscrire mon établissement</button>
+  </div>
+</nav>
+
+<!-- ANNUAIRE -->
+<div class="page active" id="page-annuaire">
+  <div class="hero">
+    <div class="hero-badge"><i class="ti ti-map-pin" aria-hidden="true"></i> Belgique</div>
+    <h1>L'annuaire équestre<br><em>de référence</em> en Belgique</h1>
+    <p>Pensions, vétérinaires, maréchaux-ferrants, ostéopathes, selliers — tous les professionnels du cheval en un seul endroit.</p>
+    <div class="search-wrap">
+      <div class="search-box">
+        <i class="ti ti-search" aria-hidden="true"></i>
+        <input type="text" id="searchInput" placeholder="Rechercher un professionnel, une ville, une province…">
+        <button class="search-btn" onclick="filterCards()">Rechercher</button>
+      </div>
+    </div>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="stat-num" id="statTotal">—</div><div class="stat-label">Établissements</div></div>
+    <div class="stat"><div class="stat-num" id="statPensions">—</div><div class="stat-label">Pensions</div></div>
+  </div>
+  <div class="main">
+    <div class="filters-wrap">
+      <div class="filters-label">Filtrer par catégorie</div>
+      <div class="filter-tabs">
+        <button class="ftab active" data-type="all" onclick="setType(this,'all')">Tous</button>
+        <button class="ftab" data-type="Pension / Centre équestre" onclick="setType(this,'Pension / Centre équestre')"><span class="dot"></span> Pensions</button>
+        <button class="ftab" data-type="Vétérinaire" onclick="setType(this,'Vétérinaire')"><span class="dot"></span> Vétérinaires</button>
+        <button class="ftab" data-type="Maréchal-ferrant" onclick="setType(this,'Maréchal-ferrant')"><span class="dot"></span> Maréchaux-ferrants</button>
+        <button class="ftab" data-type="Ostéopathe / Kiné" onclick="setType(this,'Ostéopathe / Kiné')"><span class="dot"></span> Ostéopathes / kiné</button>
+        <button class="ftab" data-type="Sellier / Équipementier" onclick="setType(this,'Sellier / Équipementier')"><span class="dot"></span> Selliers</button>
+        <button class="ftab" data-type="Shiatsu" onclick="setType(this,'Shiatsu')"><span class="dot"></span> Shiatsu</button>
+        <button class="ftab" data-type="Nutritionniste équin" onclick="setType(this,'Nutritionniste équin')"><span class="dot"></span> Nutritionnistes</button>
+      </div>
+      <div class="filter-row2">
+        <select class="filter-select" id="provinceFilter" onchange="filterCards()">
+          <option value="">Toutes les provinces</option>
+          <option>Brabant Wallon</option><option>Hainaut</option><option>Liège</option>
+          <option>Luxembourg</option><option>Namur</option><option>Brabant Flamand</option>
+          <option>Flandre orientale</option><option>Flandre occidentale</option><option>Anvers</option>
+        </select>
+        <select class="filter-select" id="sortFilter" onchange="filterCards()">
+          <option value="nom">Trier : Nom A→Z</option>
+          <option value="province">Trier : Province</option>
+        </select>
+        <span class="result-count" id="resultCount"></span>
+      </div>
+    </div>
+    <div class="compare-banner">
+      <div class="compare-icon"><i class="ti ti-layout-columns" aria-hidden="true"></i></div>
+      <div class="compare-text"><strong>Comparer des pensions</strong> — Retrouvez le tableau comparatif en bas de page</div>
+      <button class="compare-cta" onclick="document.getElementById('compareSection').scrollIntoView({behavior:'smooth'})">Voir le comparatif</button>
+    </div>
+    <div id="cardsGrid" class="cards-grid"></div>
+    <div class="compare-section" id="compareSection">
+      <div class="compare-head">
+        <div class="compare-head-title">Comparatif pensions</div>
+        <span style="font-size:11px;color:var(--muted)" id="compareCount"></span>
+      </div>
+      <div style="overflow-x:auto">
+        <table><thead><tr><th>Pension</th><th>Prix/mois</th><th>Boxes</th><th>Pré</th><th>Paddock</th><th>Piste ext.</th><th>Manège</th><th>Douche</th><th>Solarium</th><th>Cours</th></tr></thead>
+        <tbody id="compareBody"></tbody></table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PENSIONS -->
+<div class="page" id="page-pensions">
+  <div class="hero" style="padding:36px 2rem 44px">
+    <div class="hero-badge"><i class="ti ti-home" aria-hidden="true"></i> Pensions</div>
+    <h1>Les <em>pensions équestres</em><br>en Belgique</h1>
+    <p>Comparez les infrastructures, prix et services des pensions belges.</p>
+  </div>
+  <div class="main">
+    <div class="filter-row2" style="margin-bottom:20px">
+      <select class="filter-select" id="pensionProvFilter" onchange="filterPensions()">
+        <option value="">Toutes les provinces</option>
+        <option>Brabant Wallon</option><option>Hainaut</option><option>Liège</option>
+        <option>Luxembourg</option><option>Namur</option><option>Brabant Flamand</option>
+        <option>Flandre orientale</option><option>Flandre occidentale</option><option>Anvers</option>
+      </select>
+      <span class="result-count" id="pensionCount"></span>
+    </div>
+    <div id="pensionGrid" class="cards-grid"></div>
+    <div class="compare-section" id="comparePensions" style="display:block">
+      <div class="compare-head">
+        <div class="compare-head-title">Comparatif détaillé</div>
+        <span style="font-size:11px;color:var(--muted)" id="comparePensionsCount"></span>
+      </div>
+      <div style="overflow-x:auto">
+        <table><thead><tr><th>Pension</th><th>Prix/mois</th><th>Boxes</th><th>Pré</th><th>Paddock</th><th>Piste ext.</th><th>Manège</th><th>Douche</th><th>Solarium</th><th>Cours</th></tr></thead>
+        <tbody id="comparePensionsBody"></tbody></table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROFESSIONNELS -->
+<div class="page" id="page-pros">
+  <div class="hero" style="padding:36px 2rem 44px">
+    <div class="hero-badge"><i class="ti ti-users" aria-hidden="true"></i> Professionnels</div>
+    <h1>Les <em>professionnels</em><br>du cheval en Belgique</h1>
+    <p>Vétérinaires, maréchaux-ferrants, ostéopathes, selliers, shiatsu, nutritionnistes.</p>
+  </div>
+  <div class="main">
+    <div class="filter-row2" style="margin-bottom:20px">
+      <select class="filter-select" id="prosType" onchange="filterPros()">
+        <option value="">Tous les types</option>
+        <option>Vétérinaire</option><option>Maréchal-ferrant</option>
+        <option>Ostéopathe / Kiné</option><option>Sellier / Équipementier</option>
+        <option>Shiatsu</option><option>Nutritionniste équin</option>
+      </select>
+      <select class="filter-select" id="prosProv" onchange="filterPros()">
+        <option value="">Toutes les provinces</option>
+        <option>Brabant Wallon</option><option>Hainaut</option><option>Liège</option>
+        <option>Luxembourg</option><option>Namur</option><option>Brabant Flamand</option>
+        <option>Flandre orientale</option><option>Flandre occidentale</option><option>Anvers</option>
+      </select>
+      <span class="result-count" id="prosCount"></span>
+    </div>
+    <div id="prosGrid" class="cards-grid"></div>
+  </div>
+</div>
+
+<!-- INSCRIPTION -->
+<div class="page" id="page-inscription">
+  <div class="form-page">
+    <h2>Inscrire mon établissement</h2>
+    <p class="sub">Rejoignez l'annuaire équestre de référence en Belgique — gratuit et sans engagement. Votre fiche sera publiée sous 48h après vérification.</p>
+    <div class="form-card" id="formCard">
+      <div class="fsec">
+        <div class="fsec-title"><i class="ti ti-building" aria-hidden="true"></i> Informations générales</div>
+        <div class="field"><label>Nom de l'établissement <span class="req">*</span></label><input type="text" id="f-nom" placeholder="ex. Centre Équestre du Moulin"></div>
+        <div class="field-row">
+          <div class="field"><label>Type <span class="req">*</span></label>
+            <select id="f-type"><option value="">Choisir…</option>
+              <option>Pension / Centre équestre</option><option>Vétérinaire</option>
+              <option>Maréchal-ferrant</option><option>Ostéopathe / Kiné</option>
+              <option>Sellier / Équipementier</option><option>Shiatsu</option><option>Nutritionniste équin</option>
+            </select>
+          </div>
+          <div class="field"><label>Province <span class="req">*</span></label>
+            <select id="f-province"><option value="">Choisir…</option>
+              <option>Brabant Wallon</option><option>Hainaut</option><option>Liège</option>
+              <option>Luxembourg</option><option>Namur</option><option>Brabant Flamand</option>
+              <option>Flandre orientale</option><option>Flandre occidentale</option><option>Anvers</option>
+            </select>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>Ville <span class="req">*</span></label><input type="text" id="f-ville" placeholder="ex. Wavre"></div>
+          <div class="field"><label>Adresse</label><input type="text" id="f-adresse" placeholder="Rue et numéro"></div>
+        </div>
+        <div class="field"><label>Description</label><textarea id="f-desc" placeholder="Décrivez votre activité, votre approche, vos points forts…"></textarea></div>
+      </div>
+      <div class="fsec">
+        <div class="fsec-title"><i class="ti ti-phone" aria-hidden="true"></i> Coordonnées</div>
+        <div class="field-row">
+          <div class="field"><label>Téléphone <span class="req">*</span></label><input type="tel" id="f-tel" placeholder="+32 4XX XX XX XX"></div>
+          <div class="field"><label>Email <span class="req">*</span></label><input type="email" id="f-email" placeholder="contact@monecurie.be"></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>Site web</label><input type="url" id="f-web" placeholder="https://..."></div>
+          <div class="field"><label>Facebook / Instagram</label><input type="url" id="f-social" placeholder="https://facebook.com/..."></div>
+        </div>
+      </div>
+      <div class="fsec">
+        <div class="fsec-title"><i class="ti ti-list-check" aria-hidden="true"></i> Services proposés</div>
+        <div class="cb-grid">
+          <label class="cb-item"><input type="checkbox" onchange="this.closest('.cb-item').classList.toggle('checked',this.checked)"> Urgences 7j/7</label>
+          <label class="cb-item"><input type="checkbox" onchange="this.closest('.cb-item').classList.toggle('checked',this.checked)"> Déplacements</label>
+          <label class="cb-item"><input type="checkbox" onchange="this.closest('.cb-item').classList.toggle('checked',this.checked)"> Sur mesure</label>
+          <label class="cb-item"><input type="checkbox" onchange="this.closest('.cb-item').classList.toggle('checked',this.checked)"> Compétition</label>
+          <label class="cb-item"><input type="checkbox" onchange="this.closest('.cb-item').classList.toggle('checked',this.checked)"> Jeunes chevaux</label>
+          <label class="cb-item"><input type="checkbox" onchange="this.closest('.cb-item').classList.toggle('checked',this.checked)"> Livraison</label>
+        </div>
+      </div>
+      <div class="form-note"><i class="ti ti-info-circle" aria-hidden="true"></i> Votre fiche sera examinée sous 48h avant publication. Vous recevrez un email de confirmation.</div>
+      <button class="form-submit" onclick="submitForm()"><i class="ti ti-send" aria-hidden="true"></i> Envoyer ma demande d'inscription</button>
+    </div>
+    <div class="success-box" id="successBox">
+      <i class="ti ti-circle-check" aria-hidden="true"></i>
+      <h3>Inscription envoyée !</h3>
+      <p>Merci ! Votre fiche a bien été reçue et sera publiée sous 48h après vérification.</p>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()"><i class="ti ti-x" aria-hidden="true"></i></button>
+    <div class="modal-stripe" id="mStripe"></div>
+    <div class="modal-head">
+      <div class="modal-icon" id="mIcon"></div>
+      <div><div class="modal-name" id="mName"></div><div class="modal-type" id="mType"></div></div>
+    </div>
+    <div class="modal-body">
+      <div><div class="modal-section-title">Coordonnées</div><div class="modal-details" id="mDetails"></div></div>
+      <div id="mDescWrap" style="display:none"><div class="modal-section-title">À propos</div><div class="modal-desc" id="mDesc"></div></div>
+      <div id="mTagsWrap" style="display:none"><div class="modal-section-title">Services</div><div class="modal-tags" id="mTags"></div></div>
+      <div class="modal-actions" id="mActions"></div>
+    </div>
+  </div>
+</div>
+
+<footer>Hippovia · <button onclick="showPage('inscription')" style="color:var(--sage);background:none;border:none;cursor:pointer;font-size:12px;font-family:'DM Sans',sans-serif">Inscrire mon établissement</button></footer>
+
+<script>
+let allRecords=[];
+let allPensionsData=[];
+let pensionsMap={};
+let currentType='all';
+
+function showPage(p){
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.nav-link').forEach(x=>x.classList.remove('active'));
+  document.getElementById('page-'+p).classList.add('active');
+  const n=document.getElementById('nav-'+p);
+  if(n)n.classList.add('active');
+  window.scrollTo(0,0);
+  if(p==='pensions'&&allRecords.length)filterPensions();
+  if(p==='pros'&&allRecords.length)filterPros();
+}
+
+async function fetchAll(table){
+  let records=[],offset='';
+  do{
+    const url=`/api/airtable?table=${encodeURIComponent(table)}&pageSize=100${offset?'&offset='+encodeURIComponent(offset):''}`;
+    const res=await fetch(url);
+    if(!res.ok)throw new Error('Erreur '+res.status);
+    const d=await res.json();
+    records=records.concat(d.records);
+    offset=d.offset||'';
+  }while(offset);
+  return records;
+}
+
+async function init(){
+  showSkeletons('cardsGrid');
+  try{
+    [allRecords, allPensionsData] = await Promise.all([
+      fetchAll('Professionnels'),
+      fetchAll('Pensions').catch(()=>[])
+    ]);
+    // Build map: Professionnel record ID -> pension details
+    pensionsMap={};
+    allPensionsData.forEach(p=>{
+      const linked=p.fields['Professionnels'];
+      if(Array.isArray(linked)) linked.forEach(id=>{ pensionsMap[id]=p.fields; });
+    });
+    document.getElementById('statTotal').textContent=allRecords.length;
+    document.getElementById('statPensions').textContent=allRecords.filter(r=>(r.fields['Type']||'').includes('Pension')).length;
+    filterCards();
+    buildCompare();
+  }catch(e){
+    document.getElementById('cardsGrid').innerHTML=`<div class="empty-state"><i class="ti ti-horse" aria-hidden="true"></i><p>Erreur : ${e.message}</p></div>`;
+  }
+}
+
+function tClass(t){
+  if(!t)return'';
+  if(t.includes('Pension'))return't-pension';
+  if(t.includes('Vét'))return't-vet';
+  if(t.includes('Maréchal'))return't-marechal';
+  if(t.includes('Ostéo'))return't-osteo';
+  if(t.includes('Sellier'))return't-sellier';
+  if(t.includes('Shiatsu'))return't-shiatsu';
+  if(t.includes('Nutri'))return't-nutri';
+  return'';
+}
+function tIcon(t){
+  if(!t)return'ti-user';
+  if(t.includes('Pension'))return'ti-home';
+  if(t.includes('Vét'))return'ti-stethoscope';
+  if(t.includes('Maréchal'))return'ti-tool';
+  if(t.includes('Ostéo'))return'ti-activity';
+  if(t.includes('Sellier'))return'ti-scissors';
+  if(t.includes('Shiatsu'))return'ti-heart';
+  if(t.includes('Nutri'))return'ti-leaf';
+  return'ti-user';
+}
+function tColor(t){
+  if(!t)return'#888';
+  if(t.includes('Pension'))return'var(--sage)';
+  if(t.includes('Vét'))return'var(--sky)';
+  if(t.includes('Maréchal'))return'var(--amber)';
+  if(t.includes('Ostéo'))return'var(--berry)';
+  if(t.includes('Sellier'))return'var(--coral)';
+  if(t.includes('Shiatsu'))return'var(--teal)';
+  if(t.includes('Nutri'))return'var(--gold)';
+  return'#888';
+}
+function tColorL(t){
+  if(!t)return'#eee';
+  if(t.includes('Pension'))return'var(--sage-l)';
+  if(t.includes('Vét'))return'var(--sky-l)';
+  if(t.includes('Maréchal'))return'var(--amber-l)';
+  if(t.includes('Ostéo'))return'var(--berry-l)';
+  if(t.includes('Sellier'))return'var(--coral-l)';
+  if(t.includes('Shiatsu'))return'var(--teal-l)';
+  if(t.includes('Nutri'))return'var(--gold-l)';
+  return'#eee';
+}
+
+function makeCard(r){
+  const f=r.fields,cls=tClass(f['Type']),ico=tIcon(f['Type']),col=tColor(f['Type']);
+  const loc=[f['Ville'],f['Province']].filter(Boolean).join(', ');
+  const prix=f['Prix box mensuel (€)']?`À partir de ${f['Prix box mensuel (€)']}€/mois`:'';
+  const boxes=f['Nombre de boxes']?`${f['Nombre de boxes']} boxes`:'';
+  const d2=prix||boxes||'';
+  const svcs=Array.isArray(f['Services'])?f['Services'].slice(0,4):[];
+  return`<div class="pro-card ${cls}" onclick="openModal('${r.id}')">
+    <div class="card-stripe"></div>
+    <div class="card-body">
+      <div class="card-top"><div class="card-icon-wrap"><i class="ti ${ico}" aria-hidden="true"></i></div></div>
+      <div class="card-name">${f['Nom']||'—'}</div>
+      <div class="card-type-badge">${f['Type']||''}</div>
+      <div class="card-details">
+        ${loc?`<div class="card-detail"><i class="ti ti-map-pin" aria-hidden="true"></i>${loc}</div>`:''}
+        ${d2?`<div class="card-detail"><i class="ti ti-info-circle" aria-hidden="true"></i>${d2}</div>`:''}
+        ${f['Téléphone']?`<div class="card-detail"><i class="ti ti-phone" aria-hidden="true"></i>${f['Téléphone']}</div>`:''}
+      </div>
+      ${svcs.length?`<div class="card-tags">${svcs.map(s=>`<span class="tag">${s}</span>`).join('')}</div>`:''}
+    </div>
+    <div class="card-footer">
+      ${f['Vérifié']?'<span class="verified"><i class="ti ti-circle-check" aria-hidden="true"></i> Vérifié</span>':'<span></span>'}
+      <div class="card-action" style="color:${col}">Voir le profil <i class="ti ti-arrow-right" style="font-size:12px" aria-hidden="true"></i></div>
+    </div>
+  </div>`;
+}
+
+function showSkeletons(id){document.getElementById(id).innerHTML=Array(6).fill('<div class="skeleton"></div>').join('');}
+
+function setType(btn,type){
+  document.querySelectorAll('.ftab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');currentType=type;filterCards();
+}
+
+function filterCards(){
+  const q=(document.getElementById('searchInput').value||'').toLowerCase().trim();
+  const prov=document.getElementById('provinceFilter').value;
+  const sort=document.getElementById('sortFilter').value;
+  let f=allRecords.filter(r=>{
+    const fld=r.fields;
+    const matchType=(currentType==='all'||(fld['Type']||'')===currentType);
+    const matchProv=(!prov||(fld['Province']||'')===prov);
+    const matchQ=!q||Object.values(fld).some(v=>typeof v==='string'&&v.toLowerCase().includes(q));
+    return matchType&&matchProv&&matchQ;
+  });
+  f.sort((a,b)=>sort==='province'?(a.fields['Province']||'').localeCompare(b.fields['Province']||''):(a.fields['Nom']||'').localeCompare(b.fields['Nom']||''));
+  document.getElementById('resultCount').textContent=f.length+' résultat'+(f.length!==1?'s':'');
+  const g=document.getElementById('cardsGrid');
+  g.innerHTML=f.length?f.map(makeCard).join(''):'<div class="empty-state" style="grid-column:1/-1"><i class="ti ti-horse" aria-hidden="true"></i><p>Aucun professionnel trouvé.</p></div>';
+}
+
+function filterPensions(){
+  const prov=document.getElementById('pensionProvFilter').value;
+  const p=allRecords.filter(r=>(r.fields['Type']||'').includes('Pension')&&(!prov||(r.fields['Province']||'')===prov));
+  document.getElementById('pensionCount').textContent=p.length+' pension'+(p.length!==1?'s':'');
+  document.getElementById('pensionGrid').innerHTML=p.length?p.map(makeCard).join(''):'<div class="empty-state" style="grid-column:1/-1"><i class="ti ti-home" aria-hidden="true"></i><p>Aucune pension trouvée.</p></div>';
+  buildComparePensions(p);
+}
+
+function buildComparePensions(pensions){
+  document.getElementById('comparePensionsCount').textContent=pensions.length+' pension'+(pensions.length!==1?'s':'');
+  const chk=v=>v?'<i class="ti ti-check chk"></i>':'<i class="ti ti-x crs"></i>';
+  document.getElementById('comparePensionsBody').innerHTML=pensions.map(r=>{
+    const f=r.fields;
+    const pf=pensionsMap[r.id]||{};
+    const loc=[f['Ville'],f['Province']].filter(Boolean).join(', ');
+    const prix=pf['Prix box mensuel (€)']||f['Prix box mensuel (€)'];
+    const boxes=pf['Nombres de boxes']||pf['Nombre de boxes']||f['Nombre de boxes'];
+    const prairie=(pf['Surface prairie (ha)']||0)>0||(f['Surface prairie (ha)']||0)>0;
+    const piste=pf['Piste extérieure']||pf['Carrière extérieure']||f['Carrière extérieure'];
+    const manege=pf['Manège couvert']||f['Manège couvert'];
+    const douche=pf['Douche chevaux']||f['Douche chevaux'];
+    const paddock=pf['Paddock']||f['Paddock'];
+    const solarium=pf['Solarium']||f['Solarium'];
+    const cours=Array.isArray(pf['Cours proposés'])&&pf['Cours proposés'].length>0||Array.isArray(f['Cours proposés'])&&f['Cours proposés'].length>0;
+    return`<tr><td><div class="pname">${f['Nom']||'—'}</div><div class="pregion">${loc}</div></td>
+      <td>${prix?`<span class="price-pill">${prix}€</span>`:'—'}</td>
+      <td>${boxes||'—'}</td>
+      <td>${chk(prairie)}</td>
+      <td>${chk(paddock)}</td>
+      <td>${chk(piste)}</td>
+      <td>${chk(manege)}</td>
+      <td>${chk(douche)}</td>
+      <td>${chk(solarium)}</td>
+      <td>${chk(cours)}</td></tr>`;
+  }).join('');
+}
+
+function filterPros(){
+  const type=document.getElementById('prosType').value;
+  const prov=document.getElementById('prosProv').value;
+  const p=allRecords.filter(r=>{
+    const f=r.fields;
+    return!(f['Type']||'').includes('Pension')&&(!type||(f['Type']||'')===type)&&(!prov||(f['Province']||'')===prov);
+  });
+  document.getElementById('prosCount').textContent=p.length+' professionnel'+(p.length!==1?'s':'');
+  document.getElementById('prosGrid').innerHTML=p.length?p.map(makeCard).join(''):'<div class="empty-state" style="grid-column:1/-1"><i class="ti ti-users" aria-hidden="true"></i><p>Aucun professionnel trouvé.</p></div>';
+}
+
+function buildCompare(){
+  const p=allRecords.filter(r=>(r.fields['Type']||'').includes('Pension'));
+  if(!p.length)return;
+  document.getElementById('compareSection').style.display='block';
+  document.getElementById('compareCount').textContent=p.length+' pension'+(p.length!==1?'s':'');
+  const chk=v=>v?'<i class="ti ti-check chk"></i>':'<i class="ti ti-x crs"></i>';
+  document.getElementById('compareBody').innerHTML=p.map(r=>{
+    const f=r.fields,pf=pensionsMap[r.id]||{},loc=[f['Ville'],f['Province']].filter(Boolean).join(', ');
+    const prix2=pf['Prix box mensuel (€)']||f['Prix box mensuel (€)'];
+    const boxes2=pf['Nombres de boxes']||pf['Nombre de boxes']||f['Nombre de boxes'];
+    return`<tr><td><div class="pname">${f['Nom']||'—'}</div><div class="pregion">${loc}</div></td>
+      <td>${prix2?`<span class="price-pill">${prix2}€</span>`:'—'}</td>
+      <td>${boxes2||'—'}</td>
+      <td>${chk((pf['Surface prairie (ha)']||f['Surface prairie (ha)']||0)>0)}</td>
+      <td>${chk(pf['Paddock']||f['Paddock'])}</td>
+      <td>${chk(pf['Piste extérieure']||pf['Carrière extérieure']||f['Carrière extérieure'])}</td>
+      <td>${chk(pf['Manège couvert']||f['Manège couvert'])}</td>
+      <td>${chk(pf['Douche chevaux']||f['Douche chevaux'])}</td>
+      <td>${chk(pf['Solarium']||f['Solarium'])}</td>
+      <td>${chk((Array.isArray(pf['Cours proposés'])&&pf['Cours proposés'].length>0)||(Array.isArray(f['Cours proposés'])&&f['Cours proposés'].length>0))}</td></tr>`;
+  }).join('');
+}
+
+function openModal(id){
+  const rec=allRecords.find(r=>r.id===id);if(!rec)return;
+  const f=rec.fields,col=tColor(f['Type']),colL=tColorL(f['Type']),ico=tIcon(f['Type']);
+  document.getElementById('mStripe').style.background=col;
+  document.getElementById('mIcon').style.cssText=`background:${colL};color:${col};width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0`;
+  document.getElementById('mIcon').innerHTML=`<i class="ti ${ico}" aria-hidden="true"></i>`;
+  document.getElementById('mName').textContent=f['Nom']||'—';
+  document.getElementById('mType').textContent=f['Type']||'';
+  document.getElementById('mType').style.cssText=`background:${colL};color:${col};display:inline-block;font-size:11px;font-weight:500;padding:3px 10px;border-radius:5px;letter-spacing:.04em;text-transform:uppercase`;
+  const dets=[];
+  if(f['Ville']||f['Province'])dets.push(`<div class="modal-detail"><i class="ti ti-map-pin" aria-hidden="true"></i>${[f['Ville'],f['Province']].filter(Boolean).join(', ')}</div>`);
+  if(f['Adresse complète'])dets.push(`<div class="modal-detail"><i class="ti ti-home" aria-hidden="true"></i>${f['Adresse complète']}</div>`);
+  if(f['Téléphone'])dets.push(`<div class="modal-detail"><i class="ti ti-phone" aria-hidden="true"></i><a href="tel:${f['Téléphone']}">${f['Téléphone']}</a></div>`);
+  if(f['Email'])dets.push(`<div class="modal-detail"><i class="ti ti-mail" aria-hidden="true"></i><a href="mailto:${f['Email']}">${f['Email']}</a></div>`);
+  if(f['Site web'])dets.push(`<div class="modal-detail"><i class="ti ti-world" aria-hidden="true"></i><a href="${f['Site web']}" target="_blank">${f['Site web'].replace(/https?:\/\/(www\.)?/,'')}</a></div>`);
+  const pf=pensionsMap[rec.id]||{};
+  const prix=pf['Prix box mensuel (€)']||f['Prix box mensuel (€)'];
+  const boxes=pf['Nombres de boxes']||pf['Nombre de boxes']||f['Nombre de boxes'];
+  if(prix)dets.push(`<div class="modal-detail"><i class="ti ti-currency-euro" aria-hidden="true"></i>À partir de ${prix}€ / mois</div>`);
+  if(boxes)dets.push(`<div class="modal-detail"><i class="ti ti-building" aria-hidden="true"></i>${boxes} boxes</div>`);
+  const prairie=pf['Surface prairie (ha)']||f['Surface prairie (ha)'];
+  if(prairie)dets.push(`<div class="modal-detail"><i class="ti ti-trees" aria-hidden="true"></i>${prairie} ha de prairie</div>`);
+  document.getElementById('mDetails').innerHTML=dets.join('');
+  if(f['Description']){document.getElementById('mDescWrap').style.display='block';document.getElementById('mDesc').textContent=f['Description'];}
+  else document.getElementById('mDescWrap').style.display='none';
+  const svcs=Array.isArray(f['Services'])?f['Services']:[];
+  if(svcs.length){document.getElementById('mTagsWrap').style.display='block';document.getElementById('mTags').innerHTML=svcs.map(s=>`<span class="tag" style="background:${colL};color:${col}">${s}</span>`).join('');}
+  else document.getElementById('mTagsWrap').style.display='none';
+  const acts=[];
+  if(f['Téléphone'])acts.push(`<a href="tel:${f['Téléphone']}" class="btn-primary" style="background:${col}"><i class="ti ti-phone" aria-hidden="true"></i> Appeler</a>`);
+  if(f['Site web'])acts.push(`<a href="${f['Site web']}" target="_blank" class="btn-secondary"><i class="ti ti-world" aria-hidden="true"></i> Site web</a>`);
+  if(f['Email'])acts.push(`<a href="mailto:${f['Email']}" class="btn-secondary"><i class="ti ti-mail" aria-hidden="true"></i> Email</a>`);
+  document.getElementById('mActions').innerHTML=acts.join('');
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){document.getElementById('modalOverlay').classList.remove('open');document.body.style.overflow='';}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+
+async function submitForm(){
+  const nom=document.getElementById('f-nom').value.trim();
+  const type=document.getElementById('f-type').value;
+  const prov=document.getElementById('f-province').value;
+  const ville=document.getElementById('f-ville').value.trim();
+  const tel=document.getElementById('f-tel').value.trim();
+  const email=document.getElementById('f-email').value.trim();
+  if(!nom||!type||!prov||!ville||!tel||!email){alert('Merci de remplir tous les champs obligatoires (*)');return;}
+  const svcs=[...document.querySelectorAll('.cb-grid input:checked')].map(c=>c.closest('.cb-item').textContent.trim());
+  try{
+    const fields={'Nom':nom,'Type':type,'Province':prov,'Ville':ville,'Téléphone':tel,'Email':email,'Actif':false,'Vérifié':false};
+    const web=document.getElementById('f-web').value.trim();
+    const desc=document.getElementById('f-desc').value.trim();
+    const adr=document.getElementById('f-adresse').value.trim();
+    if(web)fields['Site web']=web;
+    if(desc)fields['Description']=desc;
+    if(adr)fields['Adresse complète']=adr;
+    if(svcs.length)fields['Services']=svcs;
+    await fetch(`/api/airtable?table=Professionnels`,{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({records:[{fields}]})
+    });
+    document.getElementById('formCard').style.display='none';
+    document.getElementById('successBox').style.display='block';
+  }catch(e){alert('Erreur lors de l\'envoi. Veuillez réessayer.');}
+}
+
+document.getElementById('searchInput').addEventListener('keydown',e=>{if(e.key==='Enter')filterCards();});
+init();
+</script>
+</body>
+</html>

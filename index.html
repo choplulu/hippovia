@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hippovia — L'annuaire équestre de référence en Belgique</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --sage:#2D9B6F;--sage-l:#E6F5EE;--sage-d:#1a6b4a;--sage-ll:#F0FAF5;
+  --amber:#D4780A;--amber-l:#FEF3E2;
+  --sky:#1A7EC8;--sky-l:#E8F3FD;
+  --berry:#8B3A8F;--berry-l:#F5EAF6;
+  --coral:#D94F2B;--coral-l:#FDEEE9;
+  --teal:#0E8A8A;--teal-l:#E5F5F5;
+  --gold:#B8860B;--gold-l:#FDF6E3;
+  --text:#1A1A1A;--muted:#6B6B6B;--border:rgba(0,0,0,0.08);
+  --bg:#F7F9F7;--white:#fff;
+}
+body{font-family:'DM Sans',sans-serif;color:var(--text);background:var(--bg);min-height:100vh}
+nav{background:var(--white);border-bottom:1px solid var(--border);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:60px;position:sticky;top:0;z-index:100}
+.logo{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:600;color:var(--text);text-decoration:none}
+.logo span{color:var(--sage)}
+.nav-links{display:flex;align-items:center;gap:24px}
+.nav-link{font-size:13px;color:var(--muted);text-decoration:none;transition:color .15s}
+.nav-link:hover{color:var(--text)}
+.nav-cta{background:var(--sage);color:white;padding:8px 20px;border-radius:20px;font-size:13px;font-weight:500;text-decoration:none;transition:background .2s}
+.nav-cta:hover{background:var(--sage-d)}
+.hero{background:var(--white);padding:88px 2rem 76px;text-align:center;border-bottom:1px solid var(--border);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 100%,#E6F5EE 0%,transparent 70%);pointer-events:none}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:6px;background:var(--sage-l);color:var(--sage-d);font-size:12px;font-weight:500;padding:5px 14px;border-radius:20px;margin-bottom:24px;letter-spacing:.04em}
+.hero h1{font-family:'Cormorant Garamond',serif;font-size:62px;font-weight:600;line-height:1.1;margin-bottom:20px;color:var(--text);max-width:720px;margin-left:auto;margin-right:auto;position:relative}
+.hero h1 em{font-style:italic;color:var(--sage)}
+.hero p{font-size:16px;color:var(--muted);max-width:520px;margin:0 auto 36px;line-height:1.7;font-weight:300;position:relative}
+.hero-search{max-width:600px;margin:0 auto 16px;display:flex;background:white;border:1.5px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.07);position:relative}
+.hero-search input{flex:1;padding:14px 16px;border:none;outline:none;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);background:transparent}
+.hero-search input::placeholder{color:#bbb}
+.hero-search select{padding:14px 28px 14px 12px;border:none;border-left:1px solid var(--border);outline:none;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--muted);background:white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24'%3E%3Cpath fill='%236B6B6B' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E") no-repeat right 8px center;cursor:pointer;appearance:none}
+.hero-search-btn{background:var(--sage);color:white;border:none;padding:14px 24px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;transition:background .2s;white-space:nowrap;display:flex;align-items:center;gap:8px}
+.hero-search-btn:hover{background:var(--sage-d)}
+.hero-hint{font-size:12px;color:var(--muted);display:flex;align-items:center;justify-content:center;gap:20px;position:relative}
+.hero-hint span{display:flex;align-items:center;gap:5px}
+.hero-hint i{font-size:14px;color:var(--sage)}
+.stats-bar{background:var(--sage-d);padding:22px 2rem}
+.stats-inner{max-width:900px;margin:0 auto;display:flex;justify-content:center}
+.stat-item{flex:1;text-align:center;border-right:1px solid rgba(255,255,255,0.15);padding:0 28px}
+.stat-item:last-child{border-right:none}
+.stat-num{font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:600;color:white;line-height:1}
+.stat-label{font-size:11px;color:rgba(255,255,255,0.55);margin-top:4px;font-weight:300;letter-spacing:.04em}
+.section{padding:68px 2rem}
+.section-inner{max-width:1080px;margin:0 auto}
+.section-header{text-align:center;margin-bottom:44px}
+.section-eyebrow{font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--sage);margin-bottom:10px}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:600;color:var(--text);line-height:1.2}
+.section-title em{font-style:italic;color:var(--sage)}
+.section-sub{font-size:14px;color:var(--muted);margin-top:10px;font-weight:300;line-height:1.6}
+.cats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+.cat-card{background:white;border:1.5px solid var(--border);border-radius:14px;padding:24px 20px;cursor:pointer;transition:all .2s;text-decoration:none;display:block}
+.cat-card:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(0,0,0,0.08);border-color:transparent}
+.cat-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:14px}
+.cat-name{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:600;color:var(--text);margin-bottom:4px}
+.cat-count{font-size:12px;color:var(--muted)}
+.cat-arrow{margin-top:16px;font-size:12px;font-weight:500;display:flex;align-items:center;gap:4px}
+.why-section{background:var(--sage-d);padding:68px 2rem}
+.why-inner{max-width:1000px;margin:0 auto}
+.why-title{font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:600;color:white;text-align:center;margin-bottom:8px}
+.why-title em{font-style:italic;color:#7DE8B8}
+.why-sub{text-align:center;color:rgba(255,255,255,0.55);font-size:14px;margin-bottom:52px;font-weight:300}
+.why-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:28px}
+.why-item{text-align:center}
+.why-icon{width:54px;height:54px;background:rgba(255,255,255,0.1);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;color:#7DE8B8;margin:0 auto 14px}
+.why-name{font-size:15px;font-weight:500;color:white;margin-bottom:6px}
+.why-desc{font-size:13px;color:rgba(255,255,255,0.5);line-height:1.7;font-weight:300}
+.recents-section{padding:68px 2rem;background:white}
+.mini-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+.mini-card{background:var(--bg);border:1.5px solid var(--border);border-radius:12px;padding:16px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:all .2s;text-decoration:none;color:inherit}
+.mini-card:hover{border-color:var(--sage);background:var(--sage-ll)}
+.mini-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.mini-name{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:600;color:var(--text);margin-bottom:2px}
+.mini-loc{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:4px}
+.mini-loc i{font-size:13px}
+.mini-badge{font-size:10px;font-weight:500;padding:2px 8px;border-radius:4px;margin-top:5px;display:inline-block;text-transform:uppercase;letter-spacing:.04em}
+.loading-mini{text-align:center;padding:40px;color:var(--muted);font-size:14px;grid-column:1/-1;opacity:.5}
+.cta-section{padding:68px 2rem}
+.cta-box{max-width:800px;margin:0 auto;background:white;border:1.5px solid var(--border);border-radius:20px;padding:52px 48px;display:flex;align-items:center;gap:52px}
+.cta-text{flex:1}
+.cta-eyebrow{font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--sage);margin-bottom:10px}
+.cta-title{font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:600;color:var(--text);line-height:1.2;margin-bottom:12px}
+.cta-desc{font-size:14px;color:var(--muted);line-height:1.7;font-weight:300;margin-bottom:24px}
+.cta-perks{display:flex;flex-direction:column;gap:9px;margin-bottom:28px}
+.cta-perk{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted)}
+.cta-perk i{color:var(--sage);font-size:16px;flex-shrink:0}
+.cta-btn{display:inline-flex;align-items:center;gap:8px;background:var(--sage);color:white;padding:12px 28px;border-radius:10px;font-size:14px;font-weight:500;text-decoration:none;transition:background .2s}
+.cta-btn:hover{background:var(--sage-d)}
+.cta-visual{flex-shrink:0;width:160px;height:160px;background:var(--sage-ll);border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:64px;color:var(--sage)}
+footer{background:var(--sage-d);padding:44px 2rem 28px}
+.footer-inner{max-width:1080px;margin:0 auto}
+.footer-top{display:flex;justify-content:space-between;align-items:flex-start;gap:40px;margin-bottom:36px;flex-wrap:wrap}
+.footer-tagline{font-size:13px;color:rgba(255,255,255,0.45);margin-top:6px;font-weight:300}
+.footer-links{display:flex;gap:52px;flex-wrap:wrap}
+.footer-col h4{font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:14px}
+.footer-col a{display:block;font-size:13px;color:rgba(255,255,255,0.6);text-decoration:none;margin-bottom:9px;transition:color .15s}
+.footer-col a:hover{color:white}
+.footer-bottom{border-top:1px solid rgba(255,255,255,0.1);padding-top:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.footer-copy{font-size:12px;color:rgba(255,255,255,0.3)}
+.footer-legal{display:flex;gap:20px}
+.footer-legal a{font-size:12px;color:rgba(255,255,255,0.35);text-decoration:none}
+.footer-legal a:hover{color:rgba(255,255,255,0.8)}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="index.html">Hippo<span>via</span></a>
+  <div class="nav-links">
+    <a class="nav-link" href="annuaire.html">Annuaire</a>
+    <a class="nav-link" href="annuaire.html">Pensions</a>
+    <a class="nav-link" href="annuaire.html">Professionnels</a>
+    <a class="nav-cta" href="annuaire.html">+ Inscrire mon établissement</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-eyebrow"><i class="ti ti-map-pin" aria-hidden="true"></i> Belgique équestre</div>
+  <h1>Trouvez le bon professionnel<br>pour votre <em>cheval</em></h1>
+  <p>Pensions, vétérinaires, maréchaux-ferrants, ostéopathes, selliers — toute la filière équine belge réunie en un seul endroit.</p>
+  <div class="hero-search">
+    <input type="text" id="heroSearch" placeholder="Pension, vétérinaire, ville, province…">
+    <select id="heroProvince">
+      <option value="">Toute la Belgique</option>
+      <option>Brabant Wallon</option><option>Hainaut</option><option>Liège</option>
+      <option>Luxembourg</option><option>Namur</option><option>Brabant Flamand</option>
+      <option>Flandre orientale</option><option>Flandre occidentale</option><option>Anvers</option>
+    </select>
+    <button class="hero-search-btn" onclick="goSearch()"><i class="ti ti-search" aria-hidden="true"></i> Rechercher</button>
+  </div>
+  <div class="hero-hint">
+    <span><i class="ti ti-circle-check" aria-hidden="true"></i> Gratuit</span>
+    <span><i class="ti ti-shield-check" aria-hidden="true"></i> Fiches vérifiées</span>
+    <span><i class="ti ti-map-2" aria-hidden="true"></i> Toute la Belgique</span>
+  </div>
+</section>
+
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat-item"><div class="stat-num" id="statTotal">—</div><div class="stat-label">Professionnels référencés</div></div>
+    <div class="stat-item"><div class="stat-num" id="statPensions">—</div><div class="stat-label">Pensions & centres</div></div>
+    <div class="stat-item"><div class="stat-num">9</div><div class="stat-label">Provinces couvertes</div></div>
+    <div class="stat-item"><div class="stat-num">7</div><div class="stat-label">Catégories</div></div>
+  </div>
+</div>
+
+<section class="section" style="background:white">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-eyebrow">Parcourir par catégorie</div>
+      <div class="section-title">Tout ce dont votre cheval<br>a <em>besoin</em></div>
+      <p class="section-sub">Cliquez sur une catégorie pour affiner votre recherche</p>
+    </div>
+    <div class="cats-grid">
+      <a class="cat-card" href="annuaire.html">
+        <div class="cat-icon" style="background:var(--sage-l);color:var(--sage)"><i class="ti ti-home" aria-hidden="true"></i></div>
+        <div class="cat-name">Pensions</div>
+        <div class="cat-count" id="countPension">Centres équestres</div>
+        <div class="cat-arrow" style="color:var(--sage)">Voir les pensions <i class="ti ti-arrow-right" style="font-size:12px" aria-hidden="true"></i></div>
+      </a>
+      <a class="cat-card" href="annuaire.html">
+        <div class="cat-icon" style="background:var(--sky-l);color:var(--sky)"><i class="ti ti-stethoscope" aria-hidden="true"></i></div>
+        <div class="cat-name">Vétérinaires</div>
+        <div class="cat-count" id="countVet">Soins & urgences</div>
+        <div class="cat-arrow" style="color:var(--sky)">Voir les vétérinaires <i class="ti ti-arrow-right" style="font-size:12px" aria-hidden="true"></i></div>
+      </a>
+      <a class="cat-card" href="annuaire.html">
+        <div class="cat-icon" style="background:var(--amber-l);color:var(--amber)"><i class="ti ti-tool" aria-hidden="true"></i></div>
+        <div class="cat-name">Maréchaux-ferrants</div>
+        <div class="cat-count" id="countMarechal">Parage & ferrage</div>
+        <div class="cat-arrow" style="color:var(--amber)">Voir les maréchaux <i class="ti ti-arrow-right" style="font-size:12px" aria-hidden="true"></i></div>
+      </a>
+      <a class="cat-card" href="annuaire.html">
+        <div class="cat-icon" style="background:var(--berry-l);color:var(--berry)"><i class="ti ti-activity" aria-hidden="true"></i></div>
+        <div class="cat-name">Ostéopathes / kiné</div>
+        <div class="cat-count" id="countOsteo">Bien-être équin</div>
+        <div class="cat-arrow" style="color:var(--berry)">Voir les ostéopathes <i class="ti ti-arrow-right" style="font-size:12px" aria-hidden="true"></i></div>
+      </a>
+      <a class="cat-card" href="annuaire.html">
+        <div class="cat-icon" style="background:var(--coral-l);color:var(--coral)"><i class="ti ti-scissors" aria-hidden="true"></i></div>
+        <div class="cat-name">Selliers</div>
+        <div class="cat-count" id="countSellier">Équipement & entretien</div>
+        <div class="cat-arrow" style="color:var(--coral)">Voir les selliers <i class="ti ti-arrow-right" style="font-size:12px" aria-hidden="true"></i></div>
+      </a>
+      <a class="cat-card" href="annuaire.html">
+        <div class="cat-icon" style="background:var(--teal-l);color:var(--teal)"><i class="ti ti-heart" aria-hidden="true"></i></div>
+        <div class="cat-name">Shiatsu</div>
+        <div class="cat-count" id="countShiatsu">Relaxation & équilibre</div>
+        <div class="cat-arrow" style="color:var(--teal)">Voir les praticiens <i class="ti ti-arrow-right" style="font-size:12px" aria-hidden="true"></i></div>
+      </a>
+      <a class="cat-card" href="annuaire.html">
+        <div class="cat-icon" style="background:var(--gold-l);color:var(--gold)"><i class="ti ti-leaf" aria-hidden="true"></i></div>
+        <div class="cat-name">Nutritionnistes</div>
+        <div class="cat-count" id="countNutri">Alimentation équine</div>
+        <div class="cat-arrow" style="color:var(--gold)">Voir les nutritionnistes <i class="ti ti-arrow-right" style="font-size:12px" aria-hidden="true"></i></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="why-section">
+  <div class="why-inner">
+    <div class="why-title">Pourquoi <em>Hippovia</em> ?</div>
+    <div class="why-sub">L'annuaire équestre belge pensé pour les propriétaires de chevaux</div>
+    <div class="why-grid">
+      <div class="why-item">
+        <div class="why-icon"><i class="ti ti-circle-check" aria-hidden="true"></i></div>
+        <div class="why-name">Fiches vérifiées</div>
+        <div class="why-desc">Chaque professionnel est vérifié avant publication pour garantir la fiabilité des informations.</div>
+      </div>
+      <div class="why-item">
+        <div class="why-icon"><i class="ti ti-coin" aria-hidden="true"></i></div>
+        <div class="why-name">100% gratuit</div>
+        <div class="why-desc">L'annuaire est entièrement gratuit pour les propriétaires comme pour les professionnels.</div>
+      </div>
+      <div class="why-item">
+        <div class="why-icon"><i class="ti ti-map-2" aria-hidden="true"></i></div>
+        <div class="why-name">Toute la Belgique</div>
+        <div class="why-desc">Les 9 provinces belges couvertes — trouvez un professionnel près de chez vous.</div>
+      </div>
+      <div class="why-item">
+        <div class="why-icon"><i class="ti ti-layout-columns" aria-hidden="true"></i></div>
+        <div class="why-name">Comparatif pensions</div>
+        <div class="why-desc">Comparez les pensions côte à côte : prix, infrastructures, disciplines proposées.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="recents-section">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-eyebrow">Nouveautés</div>
+      <div class="section-title">Derniers professionnels<br><em>inscrits</em></div>
+    </div>
+    <div class="mini-cards" id="recentCards">
+      <div class="loading-mini">Chargement…</div>
+    </div>
+    <div style="text-align:center;margin-top:32px">
+      <a href="annuaire.html" style="display:inline-flex;align-items:center;gap:8px;background:white;color:var(--sage);border:1.5px solid var(--sage);padding:11px 28px;border-radius:10px;font-size:14px;font-weight:500;text-decoration:none;transition:all .2s">
+        Voir tous les professionnels <i class="ti ti-arrow-right" style="font-size:14px" aria-hidden="true"></i>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="cta-section">
+  <div class="cta-box">
+    <div class="cta-text">
+      <div class="cta-eyebrow">Vous êtes un professionnel ?</div>
+      <div class="cta-title">Inscrivez votre<br>établissement gratuitement</div>
+      <p class="cta-desc">Rejoignez les professionnels équestres belges déjà référencés sur Hippovia et soyez visible auprès de milliers de propriétaires de chevaux.</p>
+      <div class="cta-perks">
+        <div class="cta-perk"><i class="ti ti-circle-check" aria-hidden="true"></i> Fiche complète avec photos, services et coordonnées</div>
+        <div class="cta-perk"><i class="ti ti-circle-check" aria-hidden="true"></i> Publication sous 48h après vérification</div>
+        <div class="cta-perk"><i class="ti ti-circle-check" aria-hidden="true"></i> Entièrement gratuit, sans engagement</div>
+      </div>
+      <a class="cta-btn" href="annuaire.html"><i class="ti ti-plus" aria-hidden="true"></i> Inscrire mon établissement</a>
+    </div>
+    <div class="cta-visual"><i class="ti ti-horse" aria-hidden="true"></i></div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <a href="index.html" style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:white;text-decoration:none">Hippi<span style="color:#7DE8B8">ko</span></a>
+        <div class="footer-tagline">L'annuaire équestre de référence en Belgique</div>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>Annuaire</h4>
+          <a href="annuaire.html">Tous les professionnels</a>
+          <a href="annuaire.html">Pensions</a>
+          <a href="annuaire.html">Vétérinaires</a>
+          <a href="annuaire.html">Maréchaux-ferrants</a>
+        </div>
+        <div class="footer-col">
+          <h4>Professionnels</h4>
+          <a href="annuaire.html">Inscrire mon établissement</a>
+          <a href="annuaire.html">Modifier ma fiche</a>
+        </div>
+        <div class="footer-col">
+          <h4>Légal</h4>
+          <a href="mentions-legales.html">Mentions légales</a>
+          <a href="confidentialite.html">Politique de confidentialité</a>
+          <a href="cgu.html">CGU</a>
+          <a href="cookies.html">Cookies</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2025 Hippovia — Tous droits réservés</div>
+      <div class="footer-legal">
+        <a href="mentions-legales.html">Mentions légales</a>
+        <a href="confidentialite.html">Confidentialité</a>
+        <a href="cgu.html">CGU</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+
+function goSearch(){
+  const q=document.getElementById('heroSearch').value.trim();
+  const prov=document.getElementById('heroProvince').value;
+  let params=[];
+  if(q) params.push('q='+encodeURIComponent(q));
+  if(prov) params.push('province='+encodeURIComponent(prov));
+  window.location.href='annuaire.html'+(params.length?'?'+params.join('&'):'');
+}
+document.getElementById('heroSearch').addEventListener('keydown',e=>{if(e.key==='Enter')goSearch();});
+
+const tColorL={pension:'var(--sage-l)',vet:'var(--sky-l)',marechal:'var(--amber-l)',osteo:'var(--berry-l)',sellier:'var(--coral-l)',shiatsu:'var(--teal-l)',nutri:'var(--gold-l)'};
+const tColor={pension:'var(--sage)',vet:'var(--sky)',marechal:'var(--amber)',osteo:'var(--berry)',sellier:'var(--coral)',shiatsu:'var(--teal)',nutri:'var(--gold)'};
+const tIcon={pension:'ti-home',vet:'ti-stethoscope',marechal:'ti-tool',osteo:'ti-activity',sellier:'ti-scissors',shiatsu:'ti-heart',nutri:'ti-leaf'};
+
+function tk(t){
+  if(!t)return'pension';
+  if(t.includes('Pension'))return'pension';
+  if(t.includes('Vét'))return'vet';
+  if(t.includes('Maréchal'))return'marechal';
+  if(t.includes('Ostéo'))return'osteo';
+  if(t.includes('Sellier'))return'sellier';
+  if(t.includes('Shiatsu'))return'shiatsu';
+  if(t.includes('Nutri'))return'nutri';
+  return'pension';
+}
+
+async function loadData(){
+  try{
+    const res=await fetch(`/api/airtable?table=Professionnels&pageSize=100`);
+    const data=await res.json();
+    const records=data.records||[];
+    document.getElementById('statTotal').textContent=records.length;
+    document.getElementById('statPensions').textContent=records.filter(r=>(r.fields['Type']||'').includes('Pension')).length;
+    const c={pension:0,vet:0,marechal:0,osteo:0,sellier:0,shiatsu:0,nutri:0};
+    records.forEach(r=>{ const k=tk(r.fields['Type']); if(c[k]!==undefined)c[k]++; });
+    if(c.pension) document.getElementById('countPension').textContent=c.pension+' établissement'+(c.pension>1?'s':'');
+    if(c.vet) document.getElementById('countVet').textContent=c.vet+' vétérinaire'+(c.vet>1?'s':'');
+    if(c.marechal) document.getElementById('countMarechal').textContent=c.marechal+' maréchal'+(c.marechal>1?'x':'');
+    if(c.osteo) document.getElementById('countOsteo').textContent=c.osteo+' praticien'+(c.osteo>1?'s':'');
+    if(c.sellier) document.getElementById('countSellier').textContent=c.sellier+' sellier'+(c.sellier>1?'s':'');
+    if(c.shiatsu) document.getElementById('countShiatsu').textContent=c.shiatsu+' praticien'+(c.shiatsu>1?'s':'');
+    if(c.nutri) document.getElementById('countNutri').textContent=c.nutri+' nutritionniste'+(c.nutri>1?'s':'');
+    const recent=[...records].slice(-6).reverse();
+    document.getElementById('recentCards').innerHTML=recent.map(r=>{
+      const f=r.fields,k=tk(f['Type']);
+      const loc=[f['Ville'],f['Province']].filter(Boolean).join(', ');
+      return`<a class="mini-card" href="annuaire.html">
+        <div class="mini-icon" style="background:${tColorL[k]};color:${tColor[k]}"><i class="ti ${tIcon[k]}" aria-hidden="true"></i></div>
+        <div>
+          <div class="mini-name">${f['Nom']||'—'}</div>
+          <div class="mini-loc"><i class="ti ti-map-pin" aria-hidden="true"></i>${loc||'Belgique'}</div>
+          <div class="mini-badge" style="background:${tColorL[k]};color:${tColor[k]}">${f['Type']||''}</div>
+        </div>
+      </a>`;
+    }).join('');
+  }catch(e){
+    document.getElementById('recentCards').innerHTML='<div class="loading-mini">Impossible de charger les données.</div>';
+  }
+}
+loadData();
+</script>
+</body>
+</html>
