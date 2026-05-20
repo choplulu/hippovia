@@ -1,0 +1,18 @@
+<svg viewBox="0 0 44 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="pg" x1="22" y1="0" x2="22" y2="52" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#2D9B6F"/>
+      <stop offset="100%" stop-color="#1a6b4a"/>
+    </linearGradient>
+  </defs>
+  <!-- Pin -->
+  <path d="M22 50C14 48 6 38 6 21 6 12 13 5 22 5 31 5 38 12 38 21 38 38 30 48 22 50Z" fill="url(#pg)"/>
+  <!-- Gloss -->
+  <ellipse cx="17" cy="14" rx="6" ry="5" fill="white" opacity="0.12"/>
+  <!-- Horse head silhouette (facing right) -->
+  <path d="M12 32C9 26 10 20 13 16 14 13 17 9 20 7L19 5 22 7C25 9 28 12 29 16 30 19 30 22 29 24 27 26 24 28 21 29 17 30 13 31 12 32Z" fill="white" opacity="0.95"/>
+  <!-- Eye -->
+  <circle cx="24" cy="12" r="1" fill="#1a6b4a"/>
+  <!-- Nostril -->
+  <circle cx="29" cy="22" r="0.8" fill="#1a6b4a"/>
+</svg>
