@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact — Hippovia</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--sage:#2D9B6F;--sage-l:#E6F5EE;--sage-d:#1a6b4a;--text:#1A1A1A;--muted:#6B6B6B;--border:rgba(0,0,0,0.08);--bg:#F7F9F7;}
+body{font-family:'DM Sans',sans-serif;color:var(--text);background:var(--bg)}
+nav{background:white;border-bottom:1px solid var(--border);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:58px;position:sticky;top:0;z-index:100}
+.logo{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--text);text-decoration:none;display:inline-flex;align-items:center}
+.logo span{color:var(--sage)}
+.nav-right{display:flex;align-items:center;gap:20px}
+.nav-link{font-size:13px;color:var(--muted);text-decoration:none;transition:color .15s}
+.nav-link:hover,.nav-link.active{color:var(--text);font-weight:500}
+.nav-cta{background:var(--sage);color:white;padding:7px 18px;border-radius:20px;font-size:13px;font-weight:500;text-decoration:none;transition:background .2s}
+.nav-cta:hover{background:var(--sage-d)}
+.page-hero{background:white;border-bottom:1px solid var(--border);padding:48px 2rem 40px;text-align:center}
+.page-hero h1{font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:600;margin-bottom:8px}
+.page-hero p{font-size:14px;color:var(--muted)}
+.content{max-width:760px;margin:0 auto;padding:48px 2rem 64px;display:flex;flex-direction:column;gap:24px}
+.card{background:white;border:1px solid var(--border);border-radius:14px;padding:32px}
+h2{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:600;margin-bottom:6px}
+.card-desc{font-size:13px;color:var(--muted);margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid var(--border)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:560px){.form-row{grid-template-columns:1fr}}
+.form-group{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.form-group:last-of-type{margin-bottom:20px}
+label{font-size:12px;font-weight:500;color:var(--text);letter-spacing:.02em}
+input,select,textarea{font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:10px 13px;outline:none;transition:border-color .15s,box-shadow .15s;width:100%}
+input:focus,select:focus,textarea:focus{border-color:var(--sage);box-shadow:0 0 0 3px var(--sage-l)}
+textarea{resize:vertical;min-height:120px;line-height:1.6}
+input::placeholder,textarea::placeholder{color:#bbb}
+.btn-submit{background:var(--sage);color:white;border:none;border-radius:10px;padding:12px 28px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;transition:background .2s;display:inline-flex;align-items:center;gap:8px}
+.btn-submit:hover{background:var(--sage-d)}
+.btn-submit:disabled{opacity:.6;cursor:default}
+.form-msg{font-size:13px;margin-top:12px;min-height:18px}
+.form-msg.ok{color:var(--sage-d)}
+.form-msg.err{color:#c0392b}
+.highlight{background:var(--sage-l);border-left:3px solid var(--sage);padding:12px 16px;border-radius:0 8px 8px 0;margin-bottom:20px;font-size:13px;color:var(--sage-d);line-height:1.6}
+footer{background:var(--sage-d);padding:24px 2rem;text-align:center;font-size:12px;color:rgba(255,255,255,0.4)}
+footer a{color:rgba(255,255,255,0.6);text-decoration:none;margin:0 10px}
+footer a:hover{color:white}
+</style>
+</head>
+<body>
+<nav>
+  <a class="logo" href="index.html"><img src="logo-icon.svg" height="30" alt="" style="margin-right:8px">Hippo<span>via</span></a>
+  <div class="nav-right">
+    <a class="nav-link" href="annuaire.html">Annuaire</a>
+    <a class="nav-link" href="carte.html">Carte</a>
+    <a class="nav-link active" href="contact.html">Contact</a>
+    <a class="nav-cta" href="annuaire.html">+ Inscrire</a>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <h1>Nous contacter</h1>
+  <p>Une question, une suggestion ou une mise à jour de fiche ? Écrivez-nous.</p>
+</div>
+
+<div class="content">
+
+  <!-- Formulaire de contact général -->
+  <div class="card">
+    <h2>Contact général</h2>
+    <p class="card-desc">Une question sur l'annuaire, un problème technique, une suggestion…</p>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="cNom">Votre nom</label>
+        <input type="text" id="cNom" placeholder="Marie Dupont">
+      </div>
+      <div class="form-group">
+        <label for="cEmail">Votre email <span style="color:#c0392b">*</span></label>
+        <input type="email" id="cEmail" placeholder="marie@exemple.be">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="cSujet">Sujet <span style="color:#c0392b">*</span></label>
+      <input type="text" id="cSujet" placeholder="Ex : Question sur l'inscription">
+    </div>
+    <div class="form-group">
+      <label for="cMessage">Message <span style="color:#c0392b">*</span></label>
+      <textarea id="cMessage" placeholder="Décrivez votre demande…"></textarea>
+    </div>
+    <button class="btn-submit" onclick="submitContact()">Envoyer le message</button>
+    <div class="form-msg" id="cMsg"></div>
+  </div>
+
+  <!-- Formulaire de modification de fiche -->
+  <div class="card">
+    <h2>Demande de modification de fiche</h2>
+    <p class="card-desc">Vous êtes un professionnel référencé et souhaitez mettre à jour les informations de votre fiche.</p>
+    <div class="highlight">
+      Indiquez les modifications souhaitées en détail. Nous les traiterons sous 48 h après vérification de votre identité.
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="mEtab">Nom de l'établissement <span style="color:#c0392b">*</span></label>
+        <input type="text" id="mEtab" placeholder="Centre équestre de l'Ardenne">
+      </div>
+      <div class="form-group">
+        <label for="mEmail">Email professionnel <span style="color:#c0392b">*</span></label>
+        <input type="email" id="mEmail" placeholder="contact@moncentre.be">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="mModifs">Modifications souhaitées <span style="color:#c0392b">*</span></label>
+      <textarea id="mModifs" placeholder="Ex : Nouveau numéro de téléphone : 04 12 34 56 78&#10;Nouvelle description : …&#10;Ajout de service : Cours collectifs adultes"></textarea>
+    </div>
+    <button class="btn-submit" onclick="submitModif()">Envoyer la demande</button>
+    <div class="form-msg" id="mMsg"></div>
+  </div>
+
+</div>
+
+<footer>
+  © 2025 Hippovia —
+  <a href="mentions-legales.html">Mentions légales</a>
+  <a href="confidentialite.html">Confidentialité</a>
+  <a href="cgu.html">CGU</a>
+  <a href="cookies.html">Cookies</a>
+</footer>
+
+<script>
+async function postContact(fields) {
+  const r = await fetch('/api/airtable?table=Contact', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ records: [{ fields }] }),
+  });
+  if (!r.ok) throw new Error();
+}
+
+function showMsg(id, text, type) {
+  const el = document.getElementById(id);
+  el.textContent = text;
+  el.className = 'form-msg ' + type;
+}
+
+async function submitContact() {
+  const nom = document.getElementById('cNom').value.trim();
+  const email = document.getElementById('cEmail').value.trim();
+  const sujet = document.getElementById('cSujet').value.trim();
+  const message = document.getElementById('cMessage').value.trim();
+
+  if (!email || !sujet || !message) {
+    showMsg('cMsg', 'Veuillez remplir les champs obligatoires.', 'err');
+    return;
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    showMsg('cMsg', 'Adresse email invalide.', 'err');
+    return;
+  }
+
+  const btn = event.currentTarget;
+  btn.disabled = true;
+  btn.textContent = 'Envoi…';
+  try {
+    await postContact({
+      Nom: nom || '(anonyme)',
+      Email: email,
+      Sujet: sujet,
+      Message: message,
+      Type: 'Contact général',
+      Date: new Date().toISOString().split('T')[0],
+    });
+    showMsg('cMsg', '✓ Message envoyé. Nous vous répondrons sous 48 h.', 'ok');
+    ['cNom','cEmail','cSujet','cMessage'].forEach(id => document.getElementById(id).value = '');
+  } catch (_) {
+    showMsg('cMsg', 'Erreur lors de l\'envoi. Réessayez ou écrivez à contact@hippovia.be.', 'err');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Envoyer le message';
+  }
+}
+
+async function submitModif() {
+  const etab = document.getElementById('mEtab').value.trim();
+  const email = document.getElementById('mEmail').value.trim();
+  const modifs = document.getElementById('mModifs').value.trim();
+
+  if (!etab || !email || !modifs) {
+    showMsg('mMsg', 'Veuillez remplir les champs obligatoires.', 'err');
+    return;
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    showMsg('mMsg', 'Adresse email invalide.', 'err');
+    return;
+  }
+
+  const btn = event.currentTarget;
+  btn.disabled = true;
+  btn.textContent = 'Envoi…';
+  try {
+    await postContact({
+      Nom: etab,
+      Email: email,
+      Sujet: 'Modification de fiche — ' + etab,
+      Message: modifs,
+      Type: 'Modification de fiche',
+      Date: new Date().toISOString().split('T')[0],
+    });
+    showMsg('mMsg', '✓ Demande envoyée. Nous la traiterons sous 48 h après vérification.', 'ok');
+    ['mEtab','mEmail','mModifs'].forEach(id => document.getElementById(id).value = '');
+  } catch (_) {
+    showMsg('mMsg', 'Erreur lors de l\'envoi. Réessayez ou écrivez à contact@hippovia.be.', 'err');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Envoyer la demande';
+  }
+}
+</script>
+<script src="cookie-banner.js"></script>
+</body>
+</html>
