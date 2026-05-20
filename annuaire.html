@@ -320,7 +320,7 @@ footer{background:white;border-top:1px solid var(--border);padding:24px 2rem;tex
         <div class="field"><label>Nom de l'établissement <span class="req">*</span></label><input type="text" id="f-nom" placeholder="ex. Centre Équestre du Moulin"></div>
         <div class="field-row">
           <div class="field"><label>Type <span class="req">*</span></label>
-            <select id="f-type"><option value="">Choisir…</option>
+            <select id="f-type" onchange="updateServices(this.value)"><option value="">Choisir…</option>
               <option>Pension / Centre équestre</option><option>Vétérinaire</option>
               <option>Maréchal-ferrant</option><option>Ostéopathe / Kiné</option>
               <option>Sellier / Équipementier</option><option>Shiatsu</option><option>Nutritionniste équin</option>
@@ -353,14 +353,7 @@ footer{background:white;border-top:1px solid var(--border);padding:24px 2rem;tex
       </div>
       <div class="fsec">
         <div class="fsec-title"><i class="ti ti-list-check" aria-hidden="true"></i> Services proposés</div>
-        <div class="cb-grid">
-          <label class="cb-item"><input type="checkbox" onchange="this.closest('.cb-item').classList.toggle('checked',this.checked)"> Urgences 7j/7</label>
-          <label class="cb-item"><input type="checkbox" onchange="this.closest('.cb-item').classList.toggle('checked',this.checked)"> Déplacements</label>
-          <label class="cb-item"><input type="checkbox" onchange="this.closest('.cb-item').classList.toggle('checked',this.checked)"> Sur mesure</label>
-          <label class="cb-item"><input type="checkbox" onchange="this.closest('.cb-item').classList.toggle('checked',this.checked)"> Compétition</label>
-          <label class="cb-item"><input type="checkbox" onchange="this.closest('.cb-item').classList.toggle('checked',this.checked)"> Jeunes chevaux</label>
-          <label class="cb-item"><input type="checkbox" onchange="this.closest('.cb-item').classList.toggle('checked',this.checked)"> Livraison</label>
-        </div>
+        <div class="cb-grid" id="servicesGrid"><p style="font-size:13px;color:var(--muted);grid-column:1/-1">Choisissez d'abord un type d'établissement.</p></div>
       </div>
       <div class="form-note"><i class="ti ti-info-circle" aria-hidden="true"></i> Votre fiche sera examinée sous 48h avant publication. Vous recevrez un email de confirmation.</div>
       <button class="form-submit" onclick="submitForm()"><i class="ti ti-send" aria-hidden="true"></i> Envoyer ma demande d'inscription</button>
@@ -655,6 +648,22 @@ function openModal(id){
 }
 function closeModal(){document.getElementById('modalOverlay').classList.remove('open');document.body.style.overflow='';}
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+
+const SERVICES_BY_TYPE={
+  'Pension / Centre équestre':['Paddock','Carrière extérieure','Manège couvert','Douche chevaux','Solarium','Dressage','Saut d\'obstacles','Cross','Western','Endurance','Équitation de loisir','Débourrage','Travail à pied','Pension complète','Demi-pension','Box + prairie','Jeunes chevaux','Compétition'],
+  'Vétérinaire':['Urgences 7j/7','Déplacements','Dentisterie','Échographie','Chirurgie','Vaccinations','Bilan de santé','Orthopédie','Post-opératoire'],
+  'Maréchal-ferrant':['Parage','Ferrage','Orthopédie','Déferrage','Urgences','Déplacements'],
+  'Ostéopathe / Kiné':['Déplacements','Post-opératoire','Prévention','Compétition','Jeunes chevaux','Récupération','Bien-être'],
+  'Sellier / Équipementier':['Sur mesure','Réparations','Entretien','Vente','Conseil','Livraison'],
+  'Shiatsu':['Relaxation','Bien-être','Prévention','Compétition','Déplacements'],
+  'Nutritionniste équin':['Bilan nutritionnel','Plan alimentaire','Compléments','Suivi régulier','Jeunes chevaux','Compétition'],
+};
+function updateServices(type){
+  const grid=document.getElementById('servicesGrid');
+  const list=SERVICES_BY_TYPE[type];
+  if(!list){grid.innerHTML='<p style="font-size:13px;color:var(--muted);grid-column:1/-1">Choisissez d\'abord un type d\'établissement.</p>';return;}
+  grid.innerHTML=list.map(s=>`<label class="cb-item"><input type="checkbox" onchange="this.closest('.cb-item').classList.toggle('checked',this.checked)"> ${s}</label>`).join('');
+}
 
 async function submitForm(){
   const nom=document.getElementById('f-nom').value.trim();
