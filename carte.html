@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carte — Hippovia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --sage:#2D9B6F;--sage-l:#E6F5EE;--sage-d:#1a6b4a;
+  --amber:#D4780A;--amber-l:#FEF3E2;
+  --sky:#1A7EC8;--sky-l:#E8F3FD;
+  --berry:#8B3A8F;--berry-l:#F5EAF6;
+  --coral:#D94F2B;--coral-l:#FDEEE9;
+  --teal:#0E8A8A;--teal-l:#E5F5F5;
+  --gold:#B8860B;--gold-l:#FDF6E3;
+  --text:#1A1A1A;--muted:#6B6B6B;--border:rgba(0,0,0,0.08);
+  --bg:#F7F9F7;--white:#fff;
+}
+html,body{height:100%;overflow:hidden}
+body{font-family:'DM Sans',sans-serif;color:var(--text);display:flex;flex-direction:column}
+nav{background:var(--white);border-bottom:1px solid var(--border);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:58px;flex-shrink:0;position:relative;z-index:400}
+.logo{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--text);text-decoration:none;display:inline-flex;align-items:center}
+.logo span{color:var(--sage)}
+.nav-right{display:flex;align-items:center;gap:16px}
+.nav-link{font-size:13px;color:var(--muted);text-decoration:none;transition:color .15s;background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;padding:0}
+.nav-link:hover,.nav-link.active{color:var(--text);font-weight:500}
+.nav-cta{background:var(--sage);color:white;padding:7px 18px;border-radius:20px;font-size:13px;font-weight:500;text-decoration:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .2s}
+.nav-cta:hover{background:var(--sage-d)}
+.map-bar{background:white;border-bottom:1px solid var(--border);padding:8px 1.5rem;display:flex;align-items:center;gap:10px;flex-shrink:0;flex-wrap:wrap;z-index:300;position:relative}
+.mftab{display:inline-flex;align-items:center;gap:6px;padding:6px 13px;border-radius:8px;border:1.5px solid var(--border);background:white;font-size:12px;color:var(--muted);cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;transition:all .15s}
+.mftab .dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.mftab.active{font-weight:500;color:white;border-color:transparent}
+.mftab[data-type="all"]{border-color:#1A1A1A;color:#1A1A1A}.mftab[data-type="all"].active{background:#1A1A1A;color:white}
+.mftab[data-type="Pension / Centre équestre"].active{background:var(--sage)}
+.mftab[data-type="Vétérinaire"].active{background:var(--sky)}
+.mftab[data-type="Maréchal-ferrant"].active{background:var(--amber)}
+.mftab[data-type="Ostéopathe / Kiné"].active{background:var(--berry)}
+.mftab[data-type="Sellier / Équipementier"].active{background:var(--coral)}
+.mftab[data-type="Shiatsu"].active{background:var(--teal)}
+.mftab[data-type="Nutritionniste équin"].active{background:var(--gold)}
+.map-prov{padding:6px 28px 6px 10px;border-radius:8px;border:1.5px solid var(--border);background:white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24'%3E%3Cpath fill='%236B6B6B' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E") no-repeat right 7px center;font-size:12px;color:var(--muted);font-family:'DM Sans',sans-serif;outline:none;cursor:pointer;appearance:none}
+.geo-btn{margin-left:auto;display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;border:1.5px solid var(--sage);background:white;color:var(--sage);font-size:12px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s;white-space:nowrap;flex-shrink:0}
+.geo-btn:hover{background:var(--sage);color:white}
+#map{flex:1;z-index:0}
+.map-count{font-size:11px;color:var(--muted);white-space:nowrap}
+/* Leaflet popup override */
+.leaflet-popup-content-wrapper{border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,0.12);padding:0;overflow:hidden}
+.leaflet-popup-content{margin:0;padding:16px 18px;font-family:'DM Sans',sans-serif}
+.leaflet-popup-tip-container{display:none}
+.hv-pop-name{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;color:#1A1A1A;margin-bottom:3px}
+.hv-pop-type{font-size:10px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;margin-bottom:8px}
+.hv-pop-row{font-size:12px;color:#6B6B6B;margin-bottom:4px;display:flex;align-items:center;gap:6px}
+.hv-pop-btn{display:block;text-align:center;margin-top:10px;padding:8px 0;border-radius:8px;font-size:12px;font-weight:500;text-decoration:none;color:white;transition:opacity .2s}
+.hv-pop-btn:hover{opacity:.85}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="index.html"><img src="logo-icon.svg" height="30" alt="" style="margin-right:8px">Hippo<span>via</span></a>
+  <div class="nav-right">
+    <a class="nav-link" href="annuaire.html">Annuaire</a>
+    <a class="nav-link active" href="carte.html">Carte</a>
+    <a class="nav-link" href="annuaire.html">Pensions</a>
+    <a class="nav-link" href="annuaire.html">Professionnels</a>
+    <a class="nav-cta" href="annuaire.html">+ Inscrire</a>
+  </div>
+</nav>
+
+<div class="map-bar">
+  <div style="display:flex;gap:7px;flex-wrap:wrap;align-items:center;flex:1">
+    <button class="mftab active" data-type="all" onclick="setFilter(this,'all')">Tous</button>
+    <button class="mftab" data-type="Pension / Centre équestre" onclick="setFilter(this,'Pension / Centre équestre')"><span class="dot" style="background:var(--sage)"></span>Pensions</button>
+    <button class="mftab" data-type="Vétérinaire" onclick="setFilter(this,'Vétérinaire')"><span class="dot" style="background:var(--sky)"></span>Vétérinaires</button>
+    <button class="mftab" data-type="Maréchal-ferrant" onclick="setFilter(this,'Maréchal-ferrant')"><span class="dot" style="background:var(--amber)"></span>Maréchaux</button>
+    <button class="mftab" data-type="Ostéopathe / Kiné" onclick="setFilter(this,'Ostéopathe / Kiné')"><span class="dot" style="background:var(--berry)"></span>Ostéopathes</button>
+    <button class="mftab" data-type="Sellier / Équipementier" onclick="setFilter(this,'Sellier / Équipementier')"><span class="dot" style="background:var(--coral)"></span>Selliers</button>
+    <button class="mftab" data-type="Shiatsu" onclick="setFilter(this,'Shiatsu')"><span class="dot" style="background:var(--teal)"></span>Shiatsu</button>
+    <button class="mftab" data-type="Nutritionniste équin" onclick="setFilter(this,'Nutritionniste équin')"><span class="dot" style="background:var(--gold)"></span>Nutritionnistes</button>
+  </div>
+  <select class="map-prov" id="mapProv" onchange="applyFilters()">
+    <option value="">Toute la Belgique</option>
+    <option>Brabant Wallon</option><option>Hainaut</option><option>Liège</option>
+    <option>Luxembourg</option><option>Namur</option><option>Brabant Flamand</option>
+    <option>Flandre orientale</option><option>Flandre occidentale</option><option>Anvers</option>
+  </select>
+  <span class="map-count" id="mapCount"></span>
+  <button class="geo-btn" onclick="geolocate()"><i class="ti ti-location" aria-hidden="true"></i>Me géolocaliser</button>
+</div>
+
+<div id="map"></div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const TYPE_COLOR={
+  'Pension / Centre équestre':'#2D9B6F',
+  'Vétérinaire':'#1A7EC8',
+  'Maréchal-ferrant':'#D4780A',
+  'Ostéopathe / Kiné':'#8B3A8F',
+  'Sellier / Équipementier':'#D94F2B',
+  'Shiatsu':'#0E8A8A',
+  'Nutritionniste équin':'#B8860B'
+};
+
+const CITIES={
+  'liege':[50.633,5.567],'liège':[50.633,5.567],'namur':[50.467,4.867],'charleroi':[50.411,4.444],
+  'mons':[50.454,3.952],'tournai':[50.606,3.389],'arlon':[49.683,5.817],'bastogne':[50.003,5.717],
+  'marche':[50.228,5.344],'marche-en-famenne':[50.228,5.344],'dinant':[50.261,4.912],
+  'huy':[50.519,5.239],'verviers':[50.589,5.861],'wavre':[50.717,4.611],
+  'nivelles':[50.597,4.332],'waterloo':[50.716,4.399],'ottignies':[50.669,4.572],
+  'braine-lalleud':[50.654,4.371],'braine-l\'alleud':[50.654,4.371],
+  'la louviere':[50.479,4.192],'la louvière':[50.479,4.192],'binche':[50.411,4.167],
+  'soignies':[50.576,4.071],'virton':[49.567,5.533],'neufchateau':[49.844,5.433],
+  'neufchâteau':[49.844,5.433],'libramont':[49.921,5.377],'spa':[50.492,5.866],
+  'malmedy':[50.427,6.028],'eupen':[50.633,6.033],'saint-vith':[50.283,6.133],
+  'gembloux':[50.562,4.700],'fleurus':[50.479,4.549],'mouscron':[50.743,3.206],
+  'thuin':[50.339,4.283],'chimay':[50.049,4.313],'philippeville':[50.200,4.550],
+  'rochefort':[50.160,5.224],'ciney':[50.297,5.097],'andenne':[50.481,5.096],
+  'hannut':[50.666,5.072],'jodoigne':[50.716,4.869],'genappe':[50.613,4.447],
+  'tubize':[50.693,4.202],'enghien':[50.697,4.034],'edingen':[50.697,4.034],
+  'durbuy':[50.352,5.454],'stavelot':[50.397,5.933],'vielsalm':[50.287,5.907],
+  'gand':[51.054,3.718],'gent':[51.054,3.718],'ghent':[51.054,3.718],
+  'anvers':[51.219,4.402],'antwerpen':[51.219,4.402],'antwerp':[51.219,4.402],
+  'bruges':[51.211,3.224],'brugge':[51.211,3.224],
+  'louvain':[50.878,4.700],'leuven':[50.878,4.700],
+  'hasselt':[50.931,5.338],'genk':[50.967,5.503],'aalst':[50.937,4.038],
+  'mechelen':[51.028,4.479],'kortrijk':[50.828,3.265],
+  'ostende':[51.229,2.918],'oostende':[51.229,2.918],
+  'sint-niklaas':[51.163,4.141],'turnhout':[51.323,4.951],
+  'roeselare':[50.945,3.121],'dendermonde':[51.028,4.101],
+  'ieper':[50.852,2.876],'ypres':[50.852,2.876],'tongeren':[50.781,5.464],
+  'poperinge':[50.857,2.727],'waregem':[50.882,3.425],'tielt':[50.999,3.325],
+  'diest':[50.989,5.056],'herentals':[51.178,4.833],'mol':[51.194,5.114],
+  'sint-truiden':[50.817,5.197],'saint-trond':[50.817,5.197],
+  'maasmechelen':[50.971,5.696],'lommel':[51.228,5.316],'beringen':[51.046,5.226],
+  'bilzen':[50.871,5.521],'aarschot':[50.983,4.828],'tienen':[50.806,4.939],
+  'vilvoorde':[50.929,4.424],'grimbergen':[50.939,4.369],'asse':[50.907,4.194],
+  'ninove':[50.837,3.983],'geraardsbergen':[50.772,3.877],
+  'ronse':[50.747,3.601],'renaix':[50.747,3.601],'oudenaarde':[50.847,3.603],
+  'eeklo':[51.186,3.574],'lokeren':[51.097,3.990],'wetteren':[51.001,3.882],
+  'zottegem':[50.872,3.811],'deinze':[50.982,3.525],'harelbeke':[50.853,3.312],
+  'menen':[50.802,3.119],'menin':[50.802,3.119],'wevelgem':[50.819,3.183],
+  'izegem':[50.912,3.217],'diksmuide':[50.988,2.862],'veurne':[51.071,2.661],
+  'knokke':[51.362,3.298],'blankenberge':[51.311,3.132],'de panne':[51.071,2.592],
+  'middelkerke':[51.181,2.869],'koksijde':[51.093,2.655],
+  'bruxelles':[50.846,4.352],'brussels':[50.846,4.352],'brussel':[50.846,4.352],
+  'ixelles':[50.826,4.368],'elsene':[50.826,4.368],'anderlecht':[50.836,4.309],
+  'molenbeek':[50.854,4.328],'uccle':[50.802,4.352],'ukkel':[50.802,4.352],
+  'schaerbeek':[50.867,4.376],'schaarbeek':[50.867,4.376],'etterbeek':[50.836,4.387],
+  'jette':[50.877,4.327],'woluwe':[50.840,4.414],'forest':[50.813,4.341],
+  'nandrin':[50.491,5.430],'tinlot':[50.459,5.524],'anthisnes':[50.465,5.520],
+  'ferrières':[50.395,5.624],'ferrieres':[50.395,5.624],'sprimont':[50.512,5.666],
+  'aywaille':[50.474,5.678],'stoumont':[50.421,5.957],'trois-ponts':[50.363,5.869],
+  'theux':[50.527,5.816],'jalhay':[50.564,5.978],'pepinster':[50.572,5.804],
+  'lierneux':[50.286,5.797],'manhay':[50.301,5.683],'gouvy':[50.185,5.951],
+  'houffalize':[50.131,5.786],'bertrix':[49.856,5.257],'bouillon':[49.790,5.067],
+  'florenville':[49.699,5.315],'chiny':[49.720,5.337],'saint-hubert':[50.026,5.373],
+  'tellin':[50.079,5.225],'wellin':[50.086,5.105],'beauraing':[50.115,4.958],
+  'gedinne':[49.978,4.937],'vresse-sur-semois':[49.872,4.941],
+  'couvin':[50.056,4.496],'florennes':[50.254,4.599],'walcourt':[50.254,4.434],
+  'mettet':[50.320,4.669],'hastière':[50.234,4.822],'anhée':[50.305,4.885],
+  'yvoir':[50.319,4.878],'profondeville':[50.380,4.869],'sambreville':[50.434,4.601]
+};
+
+const PROVINCES={
+  'Brabant Wallon':[50.630,4.520],'Hainaut':[50.420,4.050],'Liège':[50.540,5.570],
+  'Luxembourg':[49.990,5.440],'Namur':[50.270,4.870],'Brabant Flamand':[50.880,4.700],
+  'Flandre orientale':[51.000,3.720],'Flandre occidentale':[51.050,3.220],'Anvers':[51.220,4.400]
+};
+
+function normCity(s){
+  if(!s)return'';
+  return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/\s+/g,' ').trim();
+}
+
+function getCoords(f){
+  const city=normCity(f['Ville']);
+  if(city){
+    if(CITIES[city])return jitter(CITIES[city]);
+    const fw=city.split(/[\s-]/)[0];
+    if(fw.length>3&&CITIES[fw])return jitter(CITIES[fw]);
+    const k=Object.keys(CITIES).find(c=>c.startsWith(fw)&&fw.length>3);
+    if(k)return jitter(CITIES[k]);
+  }
+  if(f['Province']&&PROVINCES[f['Province']])return jitter(PROVINCES[f['Province']]);
+  return jitter([50.5,4.4]);
+}
+
+function jitter([lat,lng]){return[lat+(Math.random()-.5)*.025,lng+(Math.random()-.5)*.025];}
+
+function typeColor(t){
+  if(!t)return'#888';
+  for(const[k,v]of Object.entries(TYPE_COLOR)){if(t.includes(k.split('/')[0].trim()))return v;}
+  return'#888';
+}
+
+// Map init
+const map=L.map('map',{zoomControl:true}).setView([50.5,4.4],8);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+  attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+  maxZoom:19
+}).addTo(map);
+
+const markerLayer=L.layerGroup().addTo(map);
+let allMarkers=[];
+let currentType='all';
+
+function makeMarker(rec){
+  const f=rec.fields;
+  const col=typeColor(f['Type']);
+  const coords=getCoords(f);
+  const m=L.circleMarker(coords,{
+    radius:8,fillColor:col,color:'white',weight:2,opacity:1,fillOpacity:.9
+  });
+  const loc=[f['Ville'],f['Province']].filter(Boolean).join(', ');
+  m.bindPopup(
+    `<div class="hv-pop-name">${f['Nom']||'—'}</div>`+
+    `<div class="hv-pop-type" style="color:${col}">${f['Type']||''}</div>`+
+    (loc?`<div class="hv-pop-row"><i class="ti ti-map-pin" style="font-size:13px;color:${col}"></i>${loc}</div>`:'')+
+    (f['Téléphone']?`<div class="hv-pop-row"><i class="ti ti-phone" style="font-size:13px;color:#aaa"></i>${f['Téléphone']}</div>`:'')+
+    `<a class="hv-pop-btn" style="background:${col}" href="annuaire.html?pro=${rec.id}">Voir la fiche →</a>`,
+    {maxWidth:240}
+  );
+  return{marker:m,type:f['Type']||'',province:f['Province']||''};
+}
+
+function setFilter(btn,type){
+  document.querySelectorAll('.mftab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  currentType=type;
+  applyFilters();
+}
+
+function applyFilters(){
+  const prov=document.getElementById('mapProv').value;
+  markerLayer.clearLayers();
+  let count=0;
+  allMarkers.forEach(({marker,type,province})=>{
+    const matchType=currentType==='all'||type===currentType;
+    const matchProv=!prov||province===prov;
+    if(matchType&&matchProv){markerLayer.addLayer(marker);count++;}
+  });
+  document.getElementById('mapCount').textContent=count+' marqueur'+(count!==1?'s':'');
+}
+
+function geolocate(){
+  if(!navigator.geolocation){alert('Géolocalisation non disponible.');return;}
+  navigator.geolocation.getCurrentPosition(
+    pos=>{map.setView([pos.coords.latitude,pos.coords.longitude],12);},
+    ()=>{alert('Impossible d\'obtenir votre position.');}
+  );
+}
+
+async function init(){
+  try{
+    let records=[],offset='';
+    do{
+      const url=`/api/airtable?table=Professionnels&pageSize=100${offset?'&offset='+encodeURIComponent(offset):''}`;
+      const r=await fetch(url);
+      if(!r.ok)throw new Error('Erreur '+r.status);
+      const d=await r.json();
+      records=records.concat(d.records||[]);
+      offset=d.offset||'';
+    }while(offset);
+    allMarkers=records.map(makeMarker);
+    applyFilters();
+  }catch(e){
+    document.getElementById('mapCount').textContent='Erreur de chargement';
+  }
+}
+
+init();
+</script>
+<script src="cookie-banner.js"></script>
+</body>
+</html>

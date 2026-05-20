@@ -18,9 +18,13 @@ export async function onRequest(context) {
   if (request.method === 'GET') {
     const pageSize = url.searchParams.get('pageSize') || '100';
     const offset = url.searchParams.get('offset') || '';
+    const filterByFormula = url.searchParams.get('filterByFormula') || '';
+    const sort = url.searchParams.get('sort') || '';
 
     let airtableUrl = `https://api.airtable.com/v0/${BASE_ID}/${encodeURIComponent(table)}?pageSize=${pageSize}`;
     if (offset) airtableUrl += `&offset=${encodeURIComponent(offset)}`;
+    if (filterByFormula) airtableUrl += `&filterByFormula=${encodeURIComponent(filterByFormula)}`;
+    if (sort) airtableUrl += `&${sort}`;
 
     const res = await fetch(airtableUrl, {
       headers: { Authorization: `Bearer ${token}` },
