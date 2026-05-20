@@ -675,7 +675,7 @@ async function submitForm(){
   if(!nom||!type||!prov||!ville||!tel||!email){alert('Merci de remplir tous les champs obligatoires (*)');return;}
   const svcs=[...document.querySelectorAll('.cb-grid input:checked')].map(c=>c.closest('.cb-item').textContent.trim());
   try{
-    const fields={'Nom':nom,'Type':type,'Province':prov,'Ville':ville,'Téléphone':tel,'Email':email,'Actif':false,'Vérifié':false};
+    const fields={'Nom':nom,'Type':type,'Province':[prov],'Ville':ville,'Téléphone':tel,'Email':email,'Actif':false,'Vérifié':false};
     const web=document.getElementById('f-web').value.trim();
     const desc=document.getElementById('f-desc').value.trim();
     const adr=document.getElementById('f-adresse').value.trim();

@@ -161,7 +161,7 @@ async function submitContact() {
   try {
     await postContact({
       Nom: nom || '(anonyme)',
-      Email: email,
+      email: email,
       Sujet: sujet,
       Message: message,
       Type: 'Contact général',
@@ -197,7 +197,7 @@ async function submitModif() {
   try {
     await postContact({
       Nom: etab,
-      Email: email,
+      email: email,
       Sujet: 'Modification de fiche — ' + etab,
       Message: modifs,
       Type: 'Modification de fiche',
