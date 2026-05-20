@@ -493,7 +493,7 @@ function makeCard(r){
   const prix=f['Prix box mensuel (€)']?`À partir de ${f['Prix box mensuel (€)']}€/mois`:'';
   const boxes=f['Nombre de boxes']?`${f['Nombre de boxes']} boxes`:'';
   const d2=prix||boxes||'';
-  const svcs=Array.isArray(f['Services'])?f['Services'].slice(0,4):[];
+  const svcs=(Array.isArray(f['Services'])?f['Services']:(f['Services']?f['Services'].split(',').map(s=>s.trim()):[])).slice(0,4);
   return`<div class="pro-card ${cls}" onclick="openModal('${r.id}')">
     <div class="card-stripe"></div>
     <div class="card-body">
@@ -634,7 +634,7 @@ function openModal(id){
   document.getElementById('mDetails').innerHTML=dets.join('');
   if(f['Description']){document.getElementById('mDescWrap').style.display='block';document.getElementById('mDesc').textContent=f['Description'];}
   else document.getElementById('mDescWrap').style.display='none';
-  const svcs=Array.isArray(f['Services'])?f['Services']:[];
+  const svcs=Array.isArray(f['Services'])?f['Services']:(f['Services']?f['Services'].split(',').map(s=>s.trim()):[]);
   if(svcs.length){document.getElementById('mTagsWrap').style.display='block';document.getElementById('mTags').innerHTML=svcs.map(s=>`<span class="tag" style="background:${colL};color:${col}">${s}</span>`).join('');}
   else document.getElementById('mTagsWrap').style.display='none';
   const acts=[];
@@ -682,7 +682,7 @@ async function submitForm(){
     if(web)fields['Site web']=web;
     if(desc)fields['Description']=desc;
     if(adr)fields['Adresse complète']=adr;
-    if(svcs.length)fields['Services']=svcs;
+    if(svcs.length)fields['Services']=svcs.join(', ');
     await fetch(`/api/airtable?table=Professionnels`,{
       method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({records:[{fields}]})
