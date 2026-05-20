@@ -22,7 +22,7 @@
 }
 body{font-family:'DM Sans',sans-serif;color:var(--text);background:var(--bg);min-height:100vh}
 nav{background:var(--white);border-bottom:1px solid var(--border);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:58px;position:sticky;top:0;z-index:200}
-.logo{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:#1A1A1A;text-decoration:none;cursor:pointer;border:none;background:none;display:inline-flex;align-items:center;gap:8px}
+.logo{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:#1A1A1A;text-decoration:none;cursor:pointer;border:none;background:none;display:inline-flex;align-items:center}
 .logo span{color:var(--sage)}
 .nav-right{display:flex;align-items:center;gap:20px}
 .nav-link{font-size:13px;color:var(--muted);cursor:pointer;text-decoration:none;transition:color .15s;border:none;background:none;font-family:'DM Sans',sans-serif;padding:0}
@@ -164,7 +164,7 @@ footer{background:white;border-top:1px solid var(--border);padding:24px 2rem;tex
 <body>
 
 <nav>
-  <button class="logo" onclick="showPage('annuaire')"><img src="logo-icon.svg" height="30" alt="">Hippo<span>via</span></button>
+  <a class="logo" href="index.html"><img src="logo-icon.svg" height="30" alt="" style="margin-right:8px">Hippo<span>via</span></a>
   <div class="nav-right">
     <button class="nav-link active" id="nav-annuaire" onclick="showPage('annuaire')">Annuaire</button>
     <button class="nav-link" id="nav-pensions" onclick="showPage('pensions')">Pensions</button>
