@@ -727,10 +727,11 @@ async function _uploadPhotos(onProgress){
       r.onerror=rej;
       r.readAsDataURL(f);
     });
-    const resp=await fetch('/api/imgbb',{
-      method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({image:base64,name:f.name}),
-    });
+    const form=new FormData();
+    form.append('key','95fa8dd534ef34deea76c98eb0cb1307');
+    form.append('image',base64);
+    form.append('name',f.name);
+    const resp=await fetch('https://api.imgbb.com/1/upload',{method:'POST',body:form});
     const data=await resp.json();
     if(data.data?.url)urls.push(data.data.url);
   }
