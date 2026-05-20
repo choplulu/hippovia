@@ -443,6 +443,7 @@ async function init(){
     buildCompare();
     const proParam=new URLSearchParams(location.search).get('pro');
     if(proParam){const r=allRecords.find(x=>x.id===proParam);if(r)openModal(r.id);}
+    if(location.hash==='#inscription')showPage('inscription');
   }catch(e){
     document.getElementById('cardsGrid').innerHTML=`<div class="empty-state"><i class="ti ti-horse" aria-hidden="true"></i><p>Erreur : ${e.message}</p></div>`;
   }
