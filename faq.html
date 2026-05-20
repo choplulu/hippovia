@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FAQ — Hippovia</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--sage:#2D9B6F;--sage-l:#E6F5EE;--sage-d:#1a6b4a;--text:#1A1A1A;--muted:#6B6B6B;--border:rgba(0,0,0,0.08);--bg:#F7F9F7;}
+body{font-family:'DM Sans',sans-serif;color:var(--text);background:var(--bg)}
+nav{background:white;border-bottom:1px solid var(--border);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:58px;position:sticky;top:0;z-index:100}
+.logo{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--text);text-decoration:none;display:inline-flex;align-items:center}
+.logo span{color:var(--sage)}
+.nav-right{display:flex;align-items:center;gap:20px}
+.nav-link{font-size:13px;color:var(--muted);text-decoration:none;transition:color .15s}
+.nav-link:hover,.nav-link.active{color:var(--text);font-weight:500}
+.nav-cta{background:var(--sage);color:white;padding:7px 18px;border-radius:20px;font-size:13px;font-weight:500;text-decoration:none;transition:background .2s}
+.nav-cta:hover{background:var(--sage-d)}
+.page-hero{background:white;border-bottom:1px solid var(--border);padding:48px 2rem 40px;text-align:center}
+.page-hero h1{font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:600;margin-bottom:8px}
+.page-hero p{font-size:14px;color:var(--muted)}
+.content{max-width:760px;margin:0 auto;padding:48px 2rem 64px;display:flex;flex-direction:column;gap:32px}
+.faq-section-title{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;color:var(--text);padding-bottom:12px;border-bottom:2px solid var(--sage-l)}
+.faq-list{display:flex;flex-direction:column;gap:4px}
+.faq-item{background:white;border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.faq-question{width:100%;text-align:left;background:none;border:none;padding:18px 20px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:var(--text);cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;transition:background .15s}
+.faq-question:hover{background:var(--bg)}
+.faq-question.open{background:var(--sage-l)}
+.faq-arrow{font-size:18px;color:var(--muted);transition:transform .2s;flex-shrink:0}
+.faq-question.open .faq-arrow{transform:rotate(180deg);color:var(--sage-d)}
+.faq-answer{font-size:14px;color:var(--muted);line-height:1.7;padding:0 20px;max-height:0;overflow:hidden;transition:max-height .25s ease,padding .25s ease}
+.faq-answer.open{padding:0 20px 18px;max-height:200px}
+.faq-answer a{color:var(--sage);text-decoration:none}
+.faq-answer a:hover{text-decoration:underline}
+footer{background:var(--sage-d);padding:24px 2rem;text-align:center;font-size:12px;color:rgba(255,255,255,0.4)}
+footer a{color:rgba(255,255,255,0.6);text-decoration:none;margin:0 10px}
+footer a:hover{color:white}
+</style>
+</head>
+<body>
+<nav>
+  <a class="logo" href="index.html"><img src="logo-icon.svg" height="30" alt="" style="margin-right:8px">Hippo<span>via</span></a>
+  <div class="nav-right">
+    <a class="nav-link" href="annuaire.html">Annuaire</a>
+    <a class="nav-link" href="carte.html">Carte</a>
+    <a class="nav-link active" href="faq.html">FAQ</a>
+    <a class="nav-link" href="contact.html">Contact</a>
+    <a class="nav-cta" href="annuaire.html">+ Inscrire</a>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <h1>Questions fréquentes</h1>
+  <p>Tout ce que vous devez savoir sur Hippovia.</p>
+</div>
+
+<div class="content">
+
+  <div>
+    <p class="faq-section-title">Pour les visiteurs</p>
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggle(this)">
+          Hippovia c'est quoi ?
+          <span class="faq-arrow">›</span>
+        </button>
+        <div class="faq-answer">Hippovia est un annuaire équestre belge gratuit qui répertorie pensions, vétérinaires, maréchaux-ferrants, ostéopathes, selliers, praticiens shiatsu et nutritionnistes équins en Belgique.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggle(this)">
+          Est-ce gratuit ?
+          <span class="faq-arrow">›</span>
+        </button>
+        <div class="faq-answer">Oui, la consultation est entièrement gratuite et sans inscription requise.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggle(this)">
+          Comment trouver un professionnel près de chez moi ?
+          <span class="faq-arrow">›</span>
+        </button>
+        <div class="faq-answer">Utilisez les filtres par province dans <a href="annuaire.html">l'annuaire</a> ou la <a href="carte.html">carte interactive</a> pour visualiser les professionnels autour de vous.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggle(this)">
+          Comment laisser un avis ?
+          <span class="faq-arrow">›</span>
+        </button>
+        <div class="faq-answer">Cliquez sur la fiche d'un professionnel puis remplissez le formulaire d'avis. Un nom est optionnel, seule la note est obligatoire.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggle(this)">
+          Les fiches sont-elles fiables ?
+          <span class="faq-arrow">›</span>
+        </button>
+        <div class="faq-answer">Oui, chaque fiche est vérifiée manuellement avant publication.</div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <p class="faq-section-title">Pour les professionnels</p>
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggle(this)">
+          Comment inscrire mon établissement ?
+          <span class="faq-arrow">›</span>
+        </button>
+        <div class="faq-answer">Via le <a href="annuaire.html#inscription">formulaire d'inscription</a> accessible depuis la navigation ou la page d'accueil. C'est gratuit et sans engagement.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggle(this)">
+          Combien de temps avant la publication ?
+          <span class="faq-arrow">›</span>
+        </button>
+        <div class="faq-answer">Votre fiche est publiée sous 48h après vérification.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggle(this)">
+          Comment modifier ma fiche ?
+          <span class="faq-arrow">›</span>
+        </button>
+        <div class="faq-answer">Via la <a href="contact.html">page Contact</a>, rubrique "Demande de modification de fiche".</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggle(this)">
+          Comment supprimer ma fiche ?
+          <span class="faq-arrow">›</span>
+        </button>
+        <div class="faq-answer">Contactez-nous via la <a href="contact.html">page Contact</a> et nous supprimerons votre fiche sous 48h.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggle(this)">
+          Mon métier n'est pas dans la liste, que faire ?
+          <span class="faq-arrow">›</span>
+        </button>
+        <div class="faq-answer">Les catégories actuelles couvrent les principaux professionnels équestres. Si votre métier n'est pas répertorié, <a href="contact.html">contactez-nous</a> — nous étudions toutes les demandes et pouvons ajouter de nouvelles catégories.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  © 2025 Hippovia —
+  <a href="mentions-legales.html">Mentions légales</a>
+  <a href="confidentialite.html">Confidentialité</a>
+  <a href="cgu.html">CGU</a>
+  <a href="cookies.html">Cookies</a>
+</footer>
+
+<script>
+function toggle(btn) {
+  const answer = btn.nextElementSibling;
+  const isOpen = btn.classList.contains('open');
+  document.querySelectorAll('.faq-question.open').forEach(q => {
+    q.classList.remove('open');
+    q.nextElementSibling.classList.remove('open');
+  });
+  if (!isOpen) {
+    btn.classList.add('open');
+    answer.classList.add('open');
+  }
+}
+</script>
+<script src="cookie-banner.js"></script>
+</body>
+</html>
