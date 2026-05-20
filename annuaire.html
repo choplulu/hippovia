@@ -441,10 +441,12 @@ async function fetchAll(table){
 async function init(){
   showSkeletons('cardsGrid');
   try{
-    [allRecords, allPensionsData] = await Promise.all([
+    let [raw, allPensionsData2] = await Promise.all([
       fetchAll('Professionnels'),
       fetchAll('Pensions').catch(()=>[])
     ]);
+    allRecords = raw.filter(r => r.fields['Vérifié'] === true);
+    allPensionsData = allPensionsData2;
     // Build map: Professionnel record ID -> pension details
     pensionsMap={};
     allPensionsData.forEach(p=>{
