@@ -34,12 +34,33 @@ tr:last-child td{border-bottom:none}
 .badge-optional{background:var(--sage-l);color:var(--sage-d)}
 footer{background:var(--sage-d);padding:24px 2rem;text-align:center;font-size:12px;color:rgba(255,255,255,0.4)}
 footer a{color:rgba(255,255,255,0.6);text-decoration:none;margin:0 10px}
+.nav-links{display:flex;align-items:center;gap:20px}
+.nav-hamburger{display:none;flex-direction:column;justify-content:center;align-items:center;gap:5px;width:44px;height:44px;background:none;border:none;cursor:pointer;flex-shrink:0;padding:10px}
+.nav-hamburger span{display:block;width:22px;height:2px;background:var(--text);border-radius:2px;transition:all .2s}
+.nav-hamburger.open span:nth-child(1){transform:rotate(45deg) translate(5px,4px)}
+.nav-hamburger.open span:nth-child(2){opacity:0;transform:translateX(-8px)}
+.nav-hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-4px)}
+@media(max-width:768px){
+  nav{padding:0 1rem}
+  .nav-hamburger{display:flex}
+  .nav-links{display:none;flex-direction:column;align-items:stretch;gap:0;position:absolute;top:58px;left:0;right:0;background:white;border-bottom:1px solid var(--border);box-shadow:0 4px 16px rgba(0,0,0,0.08);padding:6px 0;z-index:199}
+  .nav-links.open{display:flex}
+  .nav-links .nav-link{padding:13px 1.5rem;font-size:15px;border-bottom:1px solid rgba(0,0,0,0.04);color:var(--text);display:block}
+  .page-hero{padding:32px 1.25rem 28px}
+  .page-hero h1{font-size:28px}
+  .content{padding:28px 1rem 48px}
+  .card{padding:20px 16px}
+  h2{font-size:18px}
+  table{min-width:480px}
+  .content>div{overflow-x:auto}
+}
 </style>
 </head>
 <body>
 <nav>
   <a class="logo" href="index.html"><img src="logo-icon.svg" height="30" alt="" style="margin-right:8px">Hippo<span>via</span></a>
-  <div style="display:flex;align-items:center;gap:20px">
+  <button class="nav-hamburger" id="navHamburger" onclick="toggleNav()" aria-label="Menu"><span></span><span></span><span></span></button>
+  <div class="nav-links">
     <a class="nav-link" href="annuaire.html">Annuaire</a>
     <a class="nav-link" href="carte.html">Carte</a>
     <a class="nav-link" href="faq.html">FAQ</a>
@@ -130,6 +151,21 @@ footer a{color:rgba(255,255,255,0.6);text-decoration:none;margin:0 10px}
   <a href="cgu.html">CGU</a>
   <a href="cookies.html">Cookies</a>
 </footer>
+<script>
+function toggleNav(){
+  const h=document.getElementById('navHamburger');
+  const n=document.querySelector('.nav-links');
+  h.classList.toggle('open');
+  if(n)n.classList.toggle('open');
+}
+document.addEventListener('click',function(e){
+  const n=document.querySelector('.nav-links');
+  const h=document.getElementById('navHamburger');
+  if(n&&n.classList.contains('open')&&!n.contains(e.target)&&!h.contains(e.target)){
+    n.classList.remove('open');h.classList.remove('open');
+  }
+});
+</script>
 <script src="cookie-banner.js"></script>
 </body>
 </html>

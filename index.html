@@ -109,12 +109,69 @@ footer{background:var(--sage-d);padding:44px 2rem 28px}
 .footer-legal{display:flex;gap:20px}
 .footer-legal a{font-size:12px;color:rgba(255,255,255,0.35);text-decoration:none}
 .footer-legal a:hover{color:rgba(255,255,255,0.8)}
+
+/* ── HAMBURGER ── */
+.nav-hamburger{display:none;flex-direction:column;justify-content:center;align-items:center;gap:5px;width:44px;height:44px;background:none;border:none;cursor:pointer;flex-shrink:0;padding:10px}
+.nav-hamburger span{display:block;width:22px;height:2px;background:var(--text);border-radius:2px;transition:all .2s}
+.nav-hamburger.open span:nth-child(1){transform:rotate(45deg) translate(5px,4px)}
+.nav-hamburger.open span:nth-child(2){opacity:0;transform:translateX(-8px)}
+.nav-hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-4px)}
+
+/* ── MOBILE ── */
+@media(max-width:768px){
+  nav{padding:0 1.25rem}
+  .nav-hamburger{display:flex}
+  .nav-links{display:none;flex-direction:column;align-items:stretch;gap:0;position:absolute;top:60px;left:0;right:0;background:white;border-bottom:1px solid var(--border);box-shadow:0 4px 16px rgba(0,0,0,0.08);padding:6px 0;z-index:199}
+  .nav-links.open{display:flex}
+  .nav-links .nav-link{padding:13px 1.5rem;font-size:15px;border-bottom:1px solid rgba(0,0,0,0.04);color:var(--text)}
+  .nav-links .nav-cta{margin:10px 1.5rem;text-align:center;padding:12px 20px;border-radius:8px;font-size:14px;display:block}
+
+  .hero{padding:48px 1.25rem 64px}
+  .hero h1{font-size:34px;line-height:1.15}
+  .hero p{font-size:14px;margin-bottom:24px}
+  .hero-search{flex-direction:column;border-radius:12px;overflow:hidden;gap:0}
+  .hero-search input{padding:14px 16px;font-size:16px}
+  .hero-search select{border-left:none;border-top:1px solid var(--border);padding:13px 32px 13px 16px;font-size:15px}
+  .hero-search-btn{padding:14px 20px;justify-content:center;font-size:15px}
+  .hero-hint{flex-wrap:wrap;gap:10px;justify-content:center}
+
+  .stats-bar{padding:16px 1.25rem}
+  .stats-inner{flex-wrap:wrap}
+  .stat-item{flex:1 1 48%;border-right:none;border-bottom:1px solid rgba(255,255,255,0.15);padding:14px 8px}
+  .stat-item:nth-child(odd){border-right:1px solid rgba(255,255,255,0.15)}
+  .stat-item:last-child,.stat-item:nth-last-child(2):nth-child(odd){border-bottom:none}
+  .stat-num{font-size:28px}
+
+  .section{padding:48px 1.25rem}
+  .section-title{font-size:30px}
+  .cats-grid{grid-template-columns:repeat(2,1fr);gap:10px}
+  .cat-name{font-size:16px}
+  .cat-icon{width:40px;height:40px;font-size:18px}
+
+  .why-section{padding:48px 1.25rem}
+  .why-title{font-size:30px}
+  .why-grid{grid-template-columns:repeat(2,1fr);gap:20px}
+
+  .recents-section{padding:48px 1.25rem}
+  .mini-cards{grid-template-columns:1fr}
+
+  .cta-section{padding:40px 1.25rem}
+  .cta-box{flex-direction:column;padding:28px 20px;gap:24px;text-align:center;align-items:center}
+  .cta-visual{width:100px;height:100px;font-size:44px}
+
+  footer{padding:36px 1.25rem 24px}
+  .footer-top{flex-direction:column;gap:24px}
+  .footer-links{flex-direction:column;gap:20px}
+  .footer-bottom{flex-direction:column;text-align:center}
+  .footer-legal{justify-content:center}
+}
 </style>
 </head>
 <body>
 
 <nav>
   <a class="logo" href="index.html"><img src="logo-icon.svg" height="30" alt="" style="margin-right:8px">Hippo<span>via</span></a>
+  <button class="nav-hamburger" id="navHamburger" onclick="toggleNav()" aria-label="Menu"><span></span><span></span><span></span></button>
   <div class="nav-links">
     <a class="nav-link" href="annuaire.html">Annuaire</a>
     <a class="nav-link" href="annuaire.html">Pensions</a>
@@ -324,6 +381,19 @@ function goSearch(){
   window.location.href='annuaire.html'+(params.length?'?'+params.join('&'):'');
 }
 document.getElementById('heroSearch').addEventListener('keydown',e=>{if(e.key==='Enter')goSearch();});
+function toggleNav(){
+  const h=document.getElementById('navHamburger');
+  const n=document.querySelector('.nav-links');
+  h.classList.toggle('open');
+  if(n)n.classList.toggle('open');
+}
+document.addEventListener('click',function(e){
+  const n=document.querySelector('.nav-links');
+  const h=document.getElementById('navHamburger');
+  if(n&&n.classList.contains('open')&&!n.contains(e.target)&&!h.contains(e.target)){
+    n.classList.remove('open');h.classList.remove('open');
+  }
+});
 
 const tColorL={pension:'var(--sage-l)',vet:'var(--sky-l)',marechal:'var(--amber-l)',osteo:'var(--berry-l)',sellier:'var(--coral-l)',shiatsu:'var(--teal-l)',nutri:'var(--gold-l)'};
 const tColor={pension:'var(--sage)',vet:'var(--sky)',marechal:'var(--amber)',osteo:'var(--berry)',sellier:'var(--coral)',shiatsu:'var(--teal)',nutri:'var(--gold)'};

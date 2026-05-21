@@ -169,6 +169,67 @@ tr:hover td{background:#FAFFF8}
 .success-box p{font-size:13px;color:var(--sage-d);line-height:1.6}
 footer{background:white;border-top:1px solid var(--border);padding:24px 2rem;text-align:center;font-size:12px;color:var(--muted);margin-top:40px}
 .review-item{padding:9px 0;border-bottom:1px solid var(--border)}
+
+/* ── HAMBURGER ── */
+.nav-hamburger{display:none;flex-direction:column;justify-content:center;align-items:center;gap:5px;width:44px;height:44px;background:none;border:none;cursor:pointer;flex-shrink:0;padding:10px}
+.nav-hamburger span{display:block;width:22px;height:2px;background:var(--text);border-radius:2px;transition:all .2s}
+.nav-hamburger.open span:nth-child(1){transform:rotate(45deg) translate(5px,4px)}
+.nav-hamburger.open span:nth-child(2){opacity:0;transform:translateX(-8px)}
+.nav-hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-4px)}
+
+/* ── MOBILE ── */
+@media(max-width:768px){
+  nav{padding:0 1rem}
+  .nav-hamburger{display:flex}
+  .nav-right{display:none;flex-direction:column;align-items:stretch;gap:0;position:absolute;top:58px;left:0;right:0;background:white;border-bottom:1px solid var(--border);box-shadow:0 4px 16px rgba(0,0,0,0.08);padding:6px 0;z-index:199}
+  .nav-right.open{display:flex}
+  .nav-right .nav-link{padding:13px 1.5rem;font-size:15px;border-bottom:1px solid rgba(0,0,0,0.04);color:var(--text);text-align:left}
+  .nav-right .nav-cta{margin:10px 1.5rem;text-align:center;padding:12px 20px;border-radius:8px;font-size:14px;display:block}
+
+  .hero{padding:28px 1.25rem 44px}
+  .hero h1{font-size:28px;line-height:1.2}
+  .hero p{font-size:14px;margin-bottom:20px}
+  .search-box{border-radius:12px}
+  .search-box input{font-size:16px}
+
+  .stats{overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap}
+  .stat{flex:1 0 auto;padding:12px 24px}
+
+  .main{padding:16px 1rem}
+
+  .filter-tabs{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:6px;margin-bottom:-6px}
+  .filter-tabs::-webkit-scrollbar{height:3px}
+  .filter-tabs::-webkit-scrollbar-track{background:transparent}
+  .filter-tabs::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+  .ftab{flex-shrink:0;padding:8px 14px;font-size:12px}
+
+  .filter-row2{flex-wrap:wrap;gap:8px}
+  .filter-select{flex:1 1 140px;min-width:0}
+  .result-count{width:100%;text-align:center}
+
+  .cards-grid{grid-template-columns:1fr;gap:12px}
+
+  .compare-section{overflow-x:auto}
+  table{min-width:600px}
+
+  .modal-overlay{padding:0;align-items:flex-end}
+  .modal{border-radius:20px 20px 0 0;max-height:92vh;width:100%;max-width:100%}
+  .modal-head{padding:20px 18px 14px}
+  .modal-body{padding:0 18px 20px}
+  .modal-actions{flex-direction:column}
+  .btn-primary,.btn-secondary{justify-content:center;padding:12px 20px;font-size:14px;min-height:44px}
+
+  .form-page{padding:20px 1rem}
+  .form-page h2{font-size:26px}
+  .form-card{padding:20px 16px}
+  .field-row{grid-template-columns:1fr}
+  .cb-grid{grid-template-columns:repeat(2,1fr)}
+  .field input,.field select,.field textarea{font-size:16px}
+
+  .compare-banner{flex-wrap:wrap;gap:10px}
+  .compare-banner .compare-text{font-size:12px}
+  .compare-cta{width:100%;text-align:center;padding:10px}
+}
 .review-item:last-child{border-bottom:none}
 .review-form{background:var(--bg);border-radius:10px;padding:14px;margin-top:6px}
 .rfm-title{font-size:11px;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px}
@@ -186,6 +247,7 @@ footer{background:white;border-top:1px solid var(--border);padding:24px 2rem;tex
 
 <nav>
   <a class="logo" href="index.html"><img src="logo-icon.svg" height="30" alt="" style="margin-right:8px">Hippo<span>via</span></a>
+  <button class="nav-hamburger" id="navHamburger" onclick="toggleNav()" aria-label="Menu"><span></span><span></span><span></span></button>
   <div class="nav-right">
     <button class="nav-link active" id="nav-annuaire" onclick="showPage('annuaire')">Annuaire</button>
     <a class="nav-link" href="carte.html">Carte</a>
@@ -844,6 +906,19 @@ async function submitReview(proId){
 // ─────────────────────────────────────────────────────────────────────────────
 
 document.getElementById('searchInput').addEventListener('keydown',e=>{if(e.key==='Enter')filterCards();});
+function toggleNav(){
+  const h=document.getElementById('navHamburger');
+  const n=document.querySelector('.nav-right');
+  h.classList.toggle('open');
+  if(n)n.classList.toggle('open');
+}
+document.addEventListener('click',function(e){
+  const n=document.querySelector('.nav-right');
+  const h=document.getElementById('navHamburger');
+  if(n&&n.classList.contains('open')&&!n.contains(e.target)&&!h.contains(e.target)){
+    n.classList.remove('open');h.classList.remove('open');
+  }
+});
 init();
 </script>
 <script src="cookie-banner.js"></script>

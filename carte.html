@@ -57,12 +57,39 @@ nav{background:var(--white);border-bottom:1px solid var(--border);padding:0 2rem
 .hv-pop-row{font-size:12px;color:#6B6B6B;margin-bottom:4px;display:flex;align-items:center;gap:6px}
 .hv-pop-btn{display:block;text-align:center;margin-top:10px;padding:8px 0;border-radius:8px;font-size:12px;font-weight:500;text-decoration:none;color:white;transition:opacity .2s}
 .hv-pop-btn:hover{opacity:.85}
+
+/* ── HAMBURGER ── */
+.nav-hamburger{display:none;flex-direction:column;justify-content:center;align-items:center;gap:5px;width:44px;height:44px;background:none;border:none;cursor:pointer;flex-shrink:0;padding:10px}
+.nav-hamburger span{display:block;width:22px;height:2px;background:var(--text);border-radius:2px;transition:all .2s}
+.nav-hamburger.open span:nth-child(1){transform:rotate(45deg) translate(5px,4px)}
+.nav-hamburger.open span:nth-child(2){opacity:0;transform:translateX(-8px)}
+.nav-hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-4px)}
+
+@media(max-width:768px){
+  nav{padding:0 1rem}
+  .nav-hamburger{display:flex}
+  .nav-right{display:none;flex-direction:column;align-items:stretch;gap:0;position:absolute;top:58px;left:0;right:0;background:white;border-bottom:1px solid var(--border);box-shadow:0 4px 16px rgba(0,0,0,0.08);padding:6px 0;z-index:399}
+  .nav-right.open{display:flex}
+  .nav-right .nav-link{padding:13px 1.5rem;font-size:15px;border-bottom:1px solid rgba(0,0,0,0.04);color:var(--text)}
+  .nav-right .nav-cta{margin:10px 1.5rem;text-align:center;padding:12px 20px;border-radius:8px;font-size:14px;display:block}
+
+  .map-bar{padding:8px 1rem;flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;gap:7px}
+  .map-bar::-webkit-scrollbar{height:0}
+  .map-bar>div{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;min-width:0}
+  .map-bar>div::-webkit-scrollbar{height:0}
+  .mftab{flex-shrink:0;font-size:11px;padding:5px 10px}
+  .map-prov{flex-shrink:0}
+  .map-count{display:none}
+  .geo-btn{flex-shrink:0;padding:7px 10px}
+  .geo-btn span{display:none}
+}
 </style>
 </head>
 <body>
 
 <nav>
   <a class="logo" href="index.html"><img src="logo-icon.svg" height="30" alt="" style="margin-right:8px">Hippo<span>via</span></a>
+  <button class="nav-hamburger" id="navHamburger" onclick="toggleNav()" aria-label="Menu"><span></span><span></span><span></span></button>
   <div class="nav-right">
     <a class="nav-link" href="annuaire.html">Annuaire</a>
     <a class="nav-link active" href="carte.html">Carte</a>
@@ -92,12 +119,27 @@ nav{background:var(--white);border-bottom:1px solid var(--border);padding:0 2rem
     <option>Flandre orientale</option><option>Flandre occidentale</option><option>Anvers</option>
   </select>
   <span class="map-count" id="mapCount"></span>
-  <button class="geo-btn" onclick="geolocate()"><i class="ti ti-location" aria-hidden="true"></i>Me géolocaliser</button>
+  <button class="geo-btn" onclick="geolocate()"><i class="ti ti-location" aria-hidden="true"></i><span>Me géolocaliser</span></button>
 </div>
 
 <div id="map"></div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+function toggleNav(){
+  const h=document.getElementById('navHamburger');
+  const n=document.querySelector('.nav-right');
+  h.classList.toggle('open');
+  if(n)n.classList.toggle('open');
+}
+document.addEventListener('click',function(e){
+  const n=document.querySelector('.nav-right');
+  const h=document.getElementById('navHamburger');
+  if(n&&n.classList.contains('open')&&!n.contains(e.target)&&!h.contains(e.target)){
+    n.classList.remove('open');h.classList.remove('open');
+  }
+});
+</script>
 <script>
 const TYPE_COLOR={
   'Pension / Centre équestre':'#2D9B6F',

@@ -36,11 +36,37 @@ nav{background:white;border-bottom:1px solid var(--border);padding:0 2rem;displa
 footer{background:var(--sage-d);padding:24px 2rem;text-align:center;font-size:12px;color:rgba(255,255,255,0.4)}
 footer a{color:rgba(255,255,255,0.6);text-decoration:none;margin:0 10px}
 footer a:hover{color:white}
+
+/* ── HAMBURGER ── */
+.nav-hamburger{display:none;flex-direction:column;justify-content:center;align-items:center;gap:5px;width:44px;height:44px;background:none;border:none;cursor:pointer;flex-shrink:0;padding:10px}
+.nav-hamburger span{display:block;width:22px;height:2px;background:var(--text);border-radius:2px;transition:all .2s}
+.nav-hamburger.open span:nth-child(1){transform:rotate(45deg) translate(5px,4px)}
+.nav-hamburger.open span:nth-child(2){opacity:0;transform:translateX(-8px)}
+.nav-hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-4px)}
+
+@media(max-width:768px){
+  nav{padding:0 1rem}
+  .nav-hamburger{display:flex}
+  .nav-right{display:none;flex-direction:column;align-items:stretch;gap:0;position:absolute;top:58px;left:0;right:0;background:white;border-bottom:1px solid var(--border);box-shadow:0 4px 16px rgba(0,0,0,0.08);padding:6px 0;z-index:199}
+  .nav-right.open{display:flex}
+  .nav-right .nav-link{padding:13px 1.5rem;font-size:15px;border-bottom:1px solid rgba(0,0,0,0.04);color:var(--text)}
+  .nav-right .nav-cta{margin:10px 1.5rem;text-align:center;padding:12px 20px;border-radius:8px;font-size:14px;display:block}
+
+  .page-hero{padding:32px 1.25rem 28px}
+  .page-hero h1{font-size:30px}
+
+  .content{padding:28px 1rem 48px}
+  .faq-question{padding:16px 14px;font-size:15px;min-height:44px}
+  .faq-answer.open{max-height:400px}
+  .faq-answer{padding:0 14px}
+  .faq-answer.open{padding:0 14px 16px}
+}
 </style>
 </head>
 <body>
 <nav>
   <a class="logo" href="index.html"><img src="logo-icon.svg" height="30" alt="" style="margin-right:8px">Hippo<span>via</span></a>
+  <button class="nav-hamburger" id="navHamburger" onclick="toggleNav()" aria-label="Menu"><span></span><span></span><span></span></button>
   <div class="nav-right">
     <a class="nav-link" href="annuaire.html">Annuaire</a>
     <a class="nav-link" href="carte.html">Carte</a>
@@ -150,6 +176,19 @@ footer a:hover{color:white}
 </footer>
 
 <script>
+function toggleNav(){
+  const h=document.getElementById('navHamburger');
+  const n=document.querySelector('.nav-right');
+  h.classList.toggle('open');
+  if(n)n.classList.toggle('open');
+}
+document.addEventListener('click',function(e){
+  const n=document.querySelector('.nav-right');
+  const h=document.getElementById('navHamburger');
+  if(n&&n.classList.contains('open')&&!n.contains(e.target)&&!h.contains(e.target)){
+    n.classList.remove('open');h.classList.remove('open');
+  }
+});
 function toggle(btn) {
   const answer = btn.nextElementSibling;
   const isOpen = btn.classList.contains('open');
