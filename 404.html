@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Page introuvable — Hippovia</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--sage:#2D9B6F;--sage-l:#E6F5EE;--sage-d:#1a6b4a;--text:#1A1A1A;--muted:#6B6B6B;--border:rgba(0,0,0,0.08);--bg:#F7F9F7;}
+body{font-family:'DM Sans',sans-serif;color:var(--text);background:var(--bg);min-height:100vh;display:flex;flex-direction:column}
+nav{background:white;border-bottom:1px solid var(--border);padding:0 2rem;display:flex;align-items:center;height:58px}
+.logo{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--text);text-decoration:none;display:inline-flex;align-items:center}
+.logo span{color:var(--sage)}
+.center{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 2rem;text-align:center}
+.num{font-family:'Cormorant Garamond',serif;font-size:120px;font-weight:600;line-height:1;color:var(--sage-l);letter-spacing:-4px;user-select:none}
+.icon{font-size:64px;margin-bottom:8px}
+h1{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:600;margin-bottom:12px}
+p{font-size:14px;color:var(--muted);line-height:1.7;max-width:400px;margin-bottom:32px}
+.btn-home{background:var(--sage);color:white;padding:12px 28px;border-radius:10px;font-size:14px;font-weight:500;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:background .2s}
+.btn-home:hover{background:var(--sage-d)}
+.btn-back{margin-left:12px;background:white;color:var(--text);padding:12px 28px;border-radius:10px;font-size:14px;font-weight:500;text-decoration:none;display:inline-flex;align-items:center;gap:8px;border:1.5px solid var(--border);transition:all .2s}
+.btn-back:hover{border-color:var(--sage);color:var(--sage)}
+.actions{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+footer{background:var(--sage-d);padding:20px 2rem;text-align:center;font-size:12px;color:rgba(255,255,255,0.4)}
+footer a{color:rgba(255,255,255,0.6);text-decoration:none;margin:0 8px}
+footer a:hover{color:white}
+@media(max-width:480px){.num{font-size:80px}.btn-home,.btn-back{width:100%;justify-content:center}}
+</style>
+</head>
+<body>
+<nav>
+  <a class="logo" href="index.html"><img src="logo-icon.svg" height="30" alt="" style="margin-right:8px">Hippo<span>via</span></a>
+</nav>
+<div class="center">
+  <div class="num">404</div>
+  <div class="icon">🐴</div>
+  <h1>Cette page n'existe pas</h1>
+  <p>Il semble que vous vous soyez égaré dans les prés. La page que vous cherchez a peut-être été déplacée ou n'a jamais existé.</p>
+  <div class="actions">
+    <a class="btn-home" href="index.html">← Retour à l'accueil</a>
+    <a class="btn-back" href="annuaire.html">Voir l'annuaire</a>
+  </div>
+</div>
+<footer>
+  © 2025 Hippovia —
+  <a href="mentions-legales.html">Mentions légales</a>
+  <a href="confidentialite.html">Confidentialité</a>
+  <a href="contact.html">Contact</a>
+</footer>
+</body>
+</html>

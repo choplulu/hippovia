@@ -128,7 +128,20 @@ tr:hover td{background:#FAFFF8}
 .modal-detail a:hover{text-decoration:underline}
 .modal-tags{display:flex;flex-wrap:wrap;gap:6px}
 .modal-desc{font-size:13px;color:var(--muted);line-height:1.7}
-.modal-actions{display:flex;gap:10px;flex-wrap:wrap;padding-top:4px}
+.modal-actions{display:flex;gap:10px;flex-wrap:wrap;padding-top:4px;align-items:flex-start}
+.share-wrap{position:relative}
+.share-dropdown{position:absolute;bottom:calc(100% + 8px);left:0;background:white;border:1.5px solid var(--border);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,0.12);min-width:200px;padding:6px 0;display:none;z-index:20}
+.share-dropdown.open{display:block}
+.share-dropdown button,.share-dropdown a{display:flex;align-items:center;gap:10px;width:100%;padding:10px 16px;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--text);background:none;border:none;cursor:pointer;text-decoration:none;transition:background .15s;text-align:left}
+.share-dropdown button:hover,.share-dropdown a:hover{background:var(--bg)}
+.share-dropdown i{font-size:16px;color:var(--muted);flex-shrink:0}
+@media print{
+  body>*{display:none!important}
+  body>.modal-overlay.open{display:block!important;position:static!important;background:none!important;padding:0!important}
+  .modal{max-height:none!important;overflow:visible!important;box-shadow:none!important;border-radius:0!important;max-width:100%!important;width:100%!important}
+  .modal-close,.modal-actions,#mReviews{display:none!important}
+  body{background:white!important}
+}
 .btn-primary{color:white;padding:10px 20px;border-radius:10px;font-size:13px;font-weight:500;text-decoration:none;display:inline-flex;align-items:center;gap:7px;border:none;cursor:pointer;font-family:'DM Sans',sans-serif}
 .btn-secondary{background:white;color:var(--text);padding:10px 20px;border-radius:10px;font-size:13px;font-weight:500;text-decoration:none;display:inline-flex;align-items:center;gap:7px;border:1.5px solid var(--border);cursor:pointer;font-family:'DM Sans',sans-serif}
 .modal-close{position:absolute;top:14px;right:14px;width:32px;height:32px;border-radius:50%;background:var(--bg);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--muted)}
@@ -758,6 +771,7 @@ function buildCompare(){
 
 function openModal(id){
   const rec=allRecords.find(r=>r.id===id);if(!rec)return;
+  _shareRec=rec;
   const f=rec.fields,col=tColor(f['Type']),colL=tColorL(f['Type']),ico=tIcon(f['Type']);
   document.getElementById('mStripe').style.background=col;
   document.getElementById('mIcon').style.cssText=`background:${colL};color:${col};width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0`;
@@ -794,13 +808,35 @@ function openModal(id){
   if(f['Téléphone'])acts.push(`<a href="tel:${f['Téléphone']}" class="btn-primary" style="background:${col}"><i class="ti ti-phone" aria-hidden="true"></i> Appeler</a>`);
   if(f['Site web'])acts.push(`<a href="${f['Site web']}" target="_blank" class="btn-secondary"><i class="ti ti-world" aria-hidden="true"></i> Site web</a>`);
   if(f['Email'])acts.push(`<a href="mailto:${f['Email']}" class="btn-secondary"><i class="ti ti-mail" aria-hidden="true"></i> Email</a>`);
+  acts.push(`<div class="share-wrap"><button class="btn-secondary" onclick="shareToggle()"><i class="ti ti-share" aria-hidden="true"></i> Partager</button><div class="share-dropdown" id="shareDropdown"><button id="shareCopyBtn" onclick="shareCopy()"><i class="ti ti-copy" aria-hidden="true"></i> Copier le lien</button><a onclick="shareWA()" style="cursor:pointer"><i class="ti ti-brand-whatsapp" aria-hidden="true"></i> WhatsApp</a><a onclick="shareMail()" style="cursor:pointer"><i class="ti ti-mail" aria-hidden="true"></i> Email</a><button onclick="closeShare();window.print()"><i class="ti ti-printer" aria-hidden="true"></i> Imprimer la fiche</button></div></div>`);
   document.getElementById('mActions').innerHTML=acts.join('');
   document.getElementById('modalOverlay').classList.add('open');
   document.body.style.overflow='hidden';
   loadReviews(rec.id,col,colL);
 }
 function closeModal(){document.getElementById('modalOverlay').classList.remove('open');document.body.style.overflow='';}
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();closeShare();}});
+let _shareRec=null;
+function shareToggle(){const d=document.getElementById('shareDropdown');if(d)d.classList.toggle('open');}
+function closeShare(){const d=document.getElementById('shareDropdown');if(d)d.classList.remove('open');}
+function shareCopy(){
+  const url=location.origin+'/annuaire.html?pro='+_shareRec.id;
+  const ok=()=>{const b=document.getElementById('shareCopyBtn');if(b){b.innerHTML='<i class="ti ti-check" aria-hidden="true"></i> Lien copié !';setTimeout(()=>{b.innerHTML='<i class="ti ti-copy" aria-hidden="true"></i> Copier le lien';},1800);}};
+  if(navigator.clipboard)navigator.clipboard.writeText(url).then(ok).catch(()=>{});
+  else{const t=document.createElement('textarea');t.value=url;document.body.appendChild(t);t.select();try{document.execCommand('copy');ok();}finally{document.body.removeChild(t);}}
+}
+function shareWA(){
+  const url=location.origin+'/annuaire.html?pro='+_shareRec.id;
+  const name=_shareRec.fields['Nom']||'';
+  window.open('https://wa.me/?text='+encodeURIComponent((name?name+' — ':'')+url),'_blank');
+  closeShare();
+}
+function shareMail(){
+  const url=location.origin+'/annuaire.html?pro='+_shareRec.id;
+  const name=_shareRec.fields['Nom']||'Fiche Hippovia';
+  window.open('mailto:?subject='+encodeURIComponent(name+' — Hippovia')+'&body='+encodeURIComponent('Bonjour,\n\nVoici la fiche de '+name+' sur Hippovia :\n'+url),'_blank');
+  closeShare();
+}
 
 const SERVICES_BY_TYPE={
   'Pension / Centre équestre':['Dressage','Saut d\'obstacles','Cross','Western','Endurance','Équitation de loisir','Débourrage','Travail à pied','Pension complète','Demi-pension','Box + prairie','Jeunes chevaux','Compétition'],
@@ -1014,6 +1050,8 @@ document.addEventListener('click',function(e){
   if(n&&n.classList.contains('open')&&!n.contains(e.target)&&!h.contains(e.target)){
     n.classList.remove('open');h.classList.remove('open');
   }
+  const sw=document.querySelector('.share-wrap');
+  if(sw&&!sw.contains(e.target))closeShare();
 });
 init();
 let _lbPhotos=[],_lbIdx=0;
