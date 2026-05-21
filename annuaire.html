@@ -237,6 +237,10 @@ footer{background:white;border-top:1px solid var(--border);padding:24px 2rem;tex
 .star-btn{font-size:22px;cursor:pointer;color:#ddd;transition:color .1s;line-height:1;padding:0 1px;background:none;border:none}
 .rfm-input{width:100%;padding:8px 10px;border:1.5px solid var(--border);border-radius:7px;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--text);background:#fafaf8;outline:none;transition:border .15s}
 .rfm-input:focus{border-color:var(--sage)}
+.modal-photos{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px;margin-top:4px}
+.modal-photo-thumb{display:block;border-radius:8px;overflow:hidden;aspect-ratio:4/3;background:var(--bg)}
+.modal-photo-thumb img{width:100%;height:100%;object-fit:cover;transition:transform .2s}
+.modal-photo-thumb:hover img{transform:scale(1.05)}
 .rfm-ta{min-height:68px;resize:vertical;line-height:1.6;margin-top:6px}
 .rfm-submit{margin-top:10px;width:100%;padding:10px;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;color:white;transition:opacity .2s}
 .rfm-submit:hover{opacity:.85}
@@ -428,6 +432,40 @@ footer{background:white;border-top:1px solid var(--border);padding:24px 2rem;tex
         <div class="fsec-title"><i class="ti ti-list-check" aria-hidden="true"></i> Services proposés</div>
         <div class="cb-grid" id="servicesGrid"><p style="font-size:13px;color:var(--muted);grid-column:1/-1">Choisissez d'abord un type d'établissement.</p></div>
       </div>
+      <div class="fsec" id="pensionFields" style="display:none">
+        <div class="fsec-title"><i class="ti ti-building-cottage" aria-hidden="true"></i> Infrastructures de la pension</div>
+        <div class="field-row">
+          <div class="field"><label>Prix box mensuel (€)</label><input type="number" id="f-prix" placeholder="ex. 450" min="0" step="1"></div>
+          <div class="field"><label>Nombre de boxes</label><input type="number" id="f-boxes" placeholder="ex. 20" min="0" step="1"></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>Surface prairie (ha)</label><input type="number" id="f-prairie" placeholder="ex. 3.5" min="0" step="0.1"></div>
+          <div class="field"></div>
+        </div>
+        <div class="field">
+          <label>Infrastructures disponibles</label>
+          <div class="cb-grid" style="margin-top:6px">
+            <label class="cb-item"><input type="checkbox" id="f-paddock" onchange="this.closest('.cb-item').classList.toggle('checked',this.checked)"> Paddock</label>
+            <label class="cb-item"><input type="checkbox" id="f-carriere" onchange="this.closest('.cb-item').classList.toggle('checked',this.checked)"> Carrière extérieure</label>
+            <label class="cb-item"><input type="checkbox" id="f-manege" onchange="this.closest('.cb-item').classList.toggle('checked',this.checked)"> Manège couvert</label>
+            <label class="cb-item"><input type="checkbox" id="f-douche" onchange="this.closest('.cb-item').classList.toggle('checked',this.checked)"> Douche chevaux</label>
+            <label class="cb-item"><input type="checkbox" id="f-solarium" onchange="this.closest('.cb-item').classList.toggle('checked',this.checked)"> Solarium</label>
+          </div>
+        </div>
+        <div class="field">
+          <label>Cours proposés</label>
+          <div class="cb-grid" id="coursGrid" style="margin-top:6px">
+            <label class="cb-item"><input type="checkbox" onchange="this.closest('.cb-item').classList.toggle('checked',this.checked)"> Dressage</label>
+            <label class="cb-item"><input type="checkbox" onchange="this.closest('.cb-item').classList.toggle('checked',this.checked)"> Saut d'obstacles</label>
+            <label class="cb-item"><input type="checkbox" onchange="this.closest('.cb-item').classList.toggle('checked',this.checked)"> Cross</label>
+            <label class="cb-item"><input type="checkbox" onchange="this.closest('.cb-item').classList.toggle('checked',this.checked)"> Western</label>
+            <label class="cb-item"><input type="checkbox" onchange="this.closest('.cb-item').classList.toggle('checked',this.checked)"> Endurance</label>
+            <label class="cb-item"><input type="checkbox" onchange="this.closest('.cb-item').classList.toggle('checked',this.checked)"> Équitation de loisir</label>
+            <label class="cb-item"><input type="checkbox" onchange="this.closest('.cb-item').classList.toggle('checked',this.checked)"> Débourrage</label>
+            <label class="cb-item"><input type="checkbox" onchange="this.closest('.cb-item').classList.toggle('checked',this.checked)"> Travail à pied</label>
+          </div>
+        </div>
+      </div>
       <div class="fsec">
         <div class="fsec-title"><i class="ti ti-photo" aria-hidden="true"></i> Photos</div>
         <p style="font-size:13px;color:var(--muted);margin-bottom:12px">Ajoutez jusqu'à 5 photos de votre établissement (JPG, PNG, WEBP — 5 Mo max).</p>
@@ -462,6 +500,7 @@ footer{background:white;border-top:1px solid var(--border);padding:24px 2rem;tex
       <div><div class="modal-section-title">Coordonnées</div><div class="modal-details" id="mDetails"></div></div>
       <div id="mDescWrap" style="display:none"><div class="modal-section-title">À propos</div><div class="modal-desc" id="mDesc"></div></div>
       <div id="mTagsWrap" style="display:none"><div class="modal-section-title">Services</div><div class="modal-tags" id="mTags"></div></div>
+      <div id="mPhotosWrap" style="display:none"><div class="modal-section-title">Photos</div><div class="modal-photos" id="mPhotos"></div></div>
       <div class="modal-actions" id="mActions"></div>
       <div id="mReviews"></div>
     </div>
@@ -722,6 +761,11 @@ function openModal(id){
   const svcs=Array.isArray(f['Services'])?f['Services']:(f['Services']?f['Services'].split(',').map(s=>s.trim()):[]);
   if(svcs.length){document.getElementById('mTagsWrap').style.display='block';document.getElementById('mTags').innerHTML=svcs.map(s=>`<span class="tag" style="background:${colL};color:${col}">${s}</span>`).join('');}
   else document.getElementById('mTagsWrap').style.display='none';
+  const photos=f['Photos'];
+  if(photos&&Array.isArray(photos)&&photos.length){
+    document.getElementById('mPhotosWrap').style.display='block';
+    document.getElementById('mPhotos').innerHTML=photos.map(p=>`<a href="${p.url}" target="_blank" class="modal-photo-thumb"><img src="${p.thumbnails?.large?.url||p.url}" alt="" loading="lazy"></a>`).join('');
+  }else{document.getElementById('mPhotosWrap').style.display='none';}
   const acts=[];
   if(f['Téléphone'])acts.push(`<a href="tel:${f['Téléphone']}" class="btn-primary" style="background:${col}"><i class="ti ti-phone" aria-hidden="true"></i> Appeler</a>`);
   if(f['Site web'])acts.push(`<a href="${f['Site web']}" target="_blank" class="btn-secondary"><i class="ti ti-world" aria-hidden="true"></i> Site web</a>`);
@@ -735,7 +779,7 @@ function closeModal(){document.getElementById('modalOverlay').classList.remove('
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
 
 const SERVICES_BY_TYPE={
-  'Pension / Centre équestre':['Paddock','Carrière extérieure','Manège couvert','Douche chevaux','Solarium','Dressage','Saut d\'obstacles','Cross','Western','Endurance','Équitation de loisir','Débourrage','Travail à pied','Pension complète','Demi-pension','Box + prairie','Jeunes chevaux','Compétition'],
+  'Pension / Centre équestre':['Dressage','Saut d\'obstacles','Cross','Western','Endurance','Équitation de loisir','Débourrage','Travail à pied','Pension complète','Demi-pension','Box + prairie','Jeunes chevaux','Compétition'],
   'Vétérinaire':['Urgences 7j/7','Déplacements','Dentisterie','Échographie','Chirurgie','Vaccinations','Bilan de santé','Orthopédie','Post-opératoire'],
   'Maréchal-ferrant':['Parage','Ferrage','Orthopédie','Déferrage','Urgences','Déplacements'],
   'Ostéopathe / Kiné':['Déplacements','Post-opératoire','Prévention','Compétition','Jeunes chevaux','Récupération','Bien-être'],
@@ -746,8 +790,9 @@ const SERVICES_BY_TYPE={
 function updateServices(type){
   const grid=document.getElementById('servicesGrid');
   const list=SERVICES_BY_TYPE[type];
-  if(!list){grid.innerHTML='<p style="font-size:13px;color:var(--muted);grid-column:1/-1">Choisissez d\'abord un type d\'établissement.</p>';return;}
+  if(!list){grid.innerHTML='<p style="font-size:13px;color:var(--muted);grid-column:1/-1">Choisissez d\'abord un type d\'établissement.</p>';document.getElementById('pensionFields').style.display='none';return;}
   grid.innerHTML=list.map(s=>`<label class="cb-item"><input type="checkbox" onchange="this.closest('.cb-item').classList.toggle('checked',this.checked)"> ${s}</label>`).join('');
+  document.getElementById('pensionFields').style.display=type==='Pension / Centre équestre'?'block':'none';
 }
 
 const _photos=[];
@@ -810,7 +855,7 @@ async function submitForm(){
   const tel=document.getElementById('f-tel').value.trim();
   const email=document.getElementById('f-email').value.trim();
   if(!nom||!type||!prov||!ville||!tel||!email){alert('Merci de remplir tous les champs obligatoires (*)');return;}
-  const svcs=[...document.querySelectorAll('.cb-grid input:checked')].map(c=>c.closest('.cb-item').textContent.trim());
+  const svcs=[...document.querySelectorAll('#servicesGrid input:checked')].map(c=>c.closest('.cb-item').textContent.trim());
   const btn=document.querySelector('.form-submit');
   btn.disabled=true;
   try{
@@ -827,10 +872,37 @@ async function submitForm(){
       if(urls.length)fields['Photos']=urls.map(u=>({url:u}));
     }
     btn.innerHTML='<i class="ti ti-send" aria-hidden="true"></i> Envoi en cours…';
-    await fetch(`/api/airtable?table=Professionnels`,{
+    const proResp=await fetch(`/api/airtable?table=Professionnels`,{
       method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({records:[{fields}]})
     });
+    if(!proResp.ok)throw new Error('Erreur serveur');
+    if(type==='Pension / Centre équestre'){
+      const proData=await proResp.json();
+      const proId=proData.records?.[0]?.id;
+      if(proId){
+        const pf={'Professionnels':[proId]};
+        const prix=document.getElementById('f-prix').value;
+        const boxes=document.getElementById('f-boxes').value;
+        const prairie=document.getElementById('f-prairie').value;
+        if(prix)pf['Prix box mensuel (€)']=parseFloat(prix);
+        if(boxes)pf['Nombre de boxes']=parseInt(boxes);
+        if(prairie)pf['Surface prairie (ha)']=parseFloat(prairie);
+        pf['Paddock']=document.getElementById('f-paddock').checked;
+        pf['Carrière extérieure']=document.getElementById('f-carriere').checked;
+        pf['Manège couvert']=document.getElementById('f-manege').checked;
+        pf['Douche chevaux']=document.getElementById('f-douche').checked;
+        pf['Solarium']=document.getElementById('f-solarium').checked;
+        const cours=[...document.querySelectorAll('#coursGrid input:checked')].map(c=>c.closest('.cb-item').textContent.trim());
+        if(cours.length)pf['Cours proposés']=cours;
+        try{
+          await fetch(`/api/airtable?table=Pensions`,{
+            method:'POST',headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({records:[{fields:pf}]})
+          });
+        }catch(_){}
+      }
+    }
     document.getElementById('formCard').style.display='none';
     document.getElementById('successBox').style.display='block';
   }catch(e){

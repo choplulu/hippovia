@@ -109,6 +109,19 @@ footer{background:var(--sage-d);padding:44px 2rem 28px}
 .footer-legal{display:flex;gap:20px}
 .footer-legal a{font-size:12px;color:rgba(255,255,255,0.35);text-decoration:none}
 .footer-legal a:hover{color:rgba(255,255,255,0.8)}
+.faq-home-section{padding:68px 2rem;background:white}
+.faq-home-inner{max-width:760px;margin:0 auto}
+.faq-home-list{display:flex;flex-direction:column;gap:6px;margin-bottom:32px}
+.faq-home-item{background:var(--bg);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.faq-home-q{width:100%;text-align:left;background:none;border:none;padding:18px 20px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;color:var(--text);cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;transition:background .15s}
+.faq-home-q:hover{background:rgba(0,0,0,0.025)}
+.faq-home-q.open{background:var(--sage-l)}
+.faq-home-arrow{font-size:20px;color:var(--muted);transition:transform .2s;flex-shrink:0;line-height:1}
+.faq-home-q.open .faq-home-arrow{transform:rotate(180deg);color:var(--sage-d)}
+.faq-home-a{font-size:14px;color:var(--muted);line-height:1.7;padding:0 20px;max-height:0;overflow:hidden;transition:max-height .28s ease,padding .28s ease}
+.faq-home-a.open{padding:0 20px 18px;max-height:300px}
+.faq-home-a a{color:var(--sage);text-decoration:none}
+.faq-home-a a:hover{text-decoration:underline}
 
 /* ── HAMBURGER ── */
 .nav-hamburger{display:none;flex-direction:column;justify-content:center;align-items:center;gap:5px;width:44px;height:44px;background:none;border:none;cursor:pointer;flex-shrink:0;padding:10px}
@@ -164,6 +177,9 @@ footer{background:var(--sage-d);padding:44px 2rem 28px}
   .footer-links{flex-direction:column;gap:20px}
   .footer-bottom{flex-direction:column;text-align:center}
   .footer-legal{justify-content:center}
+
+  .faq-home-section{padding:48px 1.25rem}
+  .faq-home-q{font-size:14px;padding:16px 14px;min-height:44px}
 }
 </style>
 </head>
@@ -330,6 +346,40 @@ footer{background:var(--sage-d);padding:44px 2rem 28px}
   </div>
 </section>
 
+<section class="faq-home-section">
+  <div class="faq-home-inner">
+    <div class="section-header">
+      <div class="section-eyebrow">FAQ</div>
+      <div class="section-title">Questions <em>fréquentes</em></div>
+    </div>
+    <div class="faq-home-list">
+      <div class="faq-home-item">
+        <button class="faq-home-q" onclick="toggleFaq(this)">C'est quoi Hippovia ?<span class="faq-home-arrow">›</span></button>
+        <div class="faq-home-a">Hippovia est un annuaire équestre belge gratuit qui répertorie pensions, vétérinaires, maréchaux-ferrants, ostéopathes, selliers, praticiens shiatsu et nutritionnistes équins en Belgique.</div>
+      </div>
+      <div class="faq-home-item">
+        <button class="faq-home-q" onclick="toggleFaq(this)">C'est gratuit ?<span class="faq-home-arrow">›</span></button>
+        <div class="faq-home-a">Oui, la consultation est entièrement gratuite et sans inscription requise.</div>
+      </div>
+      <div class="faq-home-item">
+        <button class="faq-home-q" onclick="toggleFaq(this)">Les fiches sont-elles fiables ?<span class="faq-home-arrow">›</span></button>
+        <div class="faq-home-a">Oui, chaque fiche est vérifiée manuellement avant publication.</div>
+      </div>
+      <div class="faq-home-item">
+        <button class="faq-home-q" onclick="toggleFaq(this)">Comment inscrire mon établissement ?<span class="faq-home-arrow">›</span></button>
+        <div class="faq-home-a">Via le formulaire d'inscription accessible depuis la navigation. C'est gratuit et sans engagement. Votre fiche est publiée sous 48h après vérification.</div>
+      </div>
+      <div class="faq-home-item">
+        <button class="faq-home-q" onclick="toggleFaq(this)">Mon métier n'est pas dans la liste ?<span class="faq-home-arrow">›</span></button>
+        <div class="faq-home-a">Contactez-nous via la <a href="contact.html">page Contact</a>, nous étudions toutes les demandes et pouvons ajouter de nouvelles catégories.</div>
+      </div>
+    </div>
+    <div style="text-align:center">
+      <a href="faq.html" style="display:inline-flex;align-items:center;gap:8px;color:var(--sage);font-size:14px;font-weight:500;text-decoration:none;border:1.5px solid var(--sage);padding:11px 24px;border-radius:10px;transition:all .2s" onmouseover="this.style.background='var(--sage)';this.style.color='white'" onmouseout="this.style.background='';this.style.color='var(--sage)'">Voir toutes les questions <i class="ti ti-arrow-right" style="font-size:14px" aria-hidden="true"></i></a>
+    </div>
+  </div>
+</section>
+
 <footer>
   <div class="footer-inner">
     <div class="footer-top">
@@ -381,6 +431,15 @@ function goSearch(){
   window.location.href='annuaire.html'+(params.length?'?'+params.join('&'):'');
 }
 document.getElementById('heroSearch').addEventListener('keydown',e=>{if(e.key==='Enter')goSearch();});
+function toggleFaq(btn){
+  const answer=btn.nextElementSibling;
+  const isOpen=btn.classList.contains('open');
+  document.querySelectorAll('.faq-home-q.open').forEach(q=>{
+    q.classList.remove('open');
+    q.nextElementSibling.classList.remove('open');
+  });
+  if(!isOpen){btn.classList.add('open');answer.classList.add('open');}
+}
 function toggleNav(){
   const h=document.getElementById('navHamburger');
   const n=document.querySelector('.nav-links');
