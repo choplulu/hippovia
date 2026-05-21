@@ -569,9 +569,19 @@ async function init(){
     });
     document.getElementById('statTotal').textContent=allRecords.length;
     document.getElementById('statPensions').textContent=allRecords.filter(r=>(r.fields['Type']||'').includes('Pension')).length;
+    const params=new URLSearchParams(location.search);
+    const typeParam=params.get('type');
+    const provParam=params.get('province');
+    const qParam=params.get('q');
+    if(typeParam){
+      currentType=typeParam;
+      document.querySelectorAll('.ftab').forEach(t=>t.classList.toggle('active',t.dataset.type===typeParam));
+    }
+    if(provParam)document.getElementById('provinceFilter').value=provParam;
+    if(qParam)document.getElementById('searchInput').value=qParam;
     filterCards();
     buildCompare();
-    const proParam=new URLSearchParams(location.search).get('pro');
+    const proParam=params.get('pro');
     if(proParam){const r=allRecords.find(x=>x.id===proParam);if(r)openModal(r.id);}
     if(location.hash==='#inscription')showPage('inscription');
   }catch(e){
